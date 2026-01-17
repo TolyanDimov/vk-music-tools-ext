@@ -1,4 +1,5 @@
 ![Preview](assets/preview.png)
+
 # СмартСкролл и VK Музыка
 
 [English](README.md) · [Русский](README_RU.md) · [Deutsch](README_DE.md)
@@ -55,5 +56,3 @@
 ## Автор
 
 Anatoly Dimov — https://github.com/TolyanDimov
-
-
