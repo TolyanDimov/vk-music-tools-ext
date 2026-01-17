@@ -1,3 +1,4 @@
+![Preview](assets/preview.png)
 # СмартСкролл и VK Музыка
 
 [English](README.md) · [Русский](README_RU.md) · [Deutsch](README_DE.md)
@@ -59,3 +60,5 @@ Popup и manifest используют язык интерфейса Chrome и `
 ## Автор
 
 Anatoly Dimov — https://github.com/TolyanDimov
+
+

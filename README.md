@@ -1,3 +1,4 @@
+![Preview](assets/preview.png)
 # SmartScroll & VK Music
 
 [English](README.md) · [Русский](README_RU.md) · [Deutsch](README_DE.md)
@@ -54,3 +55,5 @@ The extension supports three languages: Russian, English, and German.
 ## Author
 
 Anatoly Dimov — https://github.com/TolyanDimov
+
+

@@ -1,3 +1,4 @@
+![Preview](assets/preview.png)
 # SmartScroll & VK Musik
 
 [English](README.md) · [Русский](README_RU.md) · [Deutsch](README_DE.md)
@@ -58,3 +59,5 @@ Anatoly Dimov — https://github.com/TolyanDimov
 **Lokalisierungsunterstützung**
 
 **Die Erweiterung**unterstützt**drei**Sprachen**: Russisch**, Englisch und Deutsch.
+
+
