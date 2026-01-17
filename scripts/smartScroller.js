@@ -7,14 +7,14 @@
   const raf = () => new Promise(r => requestAnimationFrame(r));
 
   const CSS = `
-    .ss-panel{position:fixed;left:12px;top:12px;z-index:2147483647;display:flex;flex-wrap:wrap;gap:6px;padding:8px;background:rgba(8,12,16,.88);border-radius:12px;color:#fff;font:13px/1.2 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.35);max-width:420px}
-    .ss-btn{cursor:pointer;border:none;border-radius:8px;padding:6px 10px;background:#1d262e;color:#fff;font-size:12px;line-height:1;transition:background .15s}
-    .ss-btn:hover{background:#12171d}
-    .ss-btn.active{background:#ff7b36;color:#0a1113;box-shadow:0 0 0 1px rgba(255,123,54,.45),0 6px 12px rgba(255,123,54,.25)}
+    .ss-panel{position:fixed;left:12px;top:12px;z-index:2147483647;display:flex;flex-wrap:wrap;gap:6px;padding:8px;background:rgba(16,16,18,.92);border-radius:12px;color:#f2f0ec;font:13px/1.2 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;box-shadow:0 10px 22px rgba(0,0,0,.45),0 0 12px rgba(255,255,255,.08);max-width:420px;border:1px solid rgba(120,120,125,.55);align-items:center}
+    .ss-btn{cursor:pointer;border:1px solid transparent;border-radius:8px;padding:6px 10px;background:linear-gradient(180deg, rgba(38,38,42,.92), rgba(18,18,20,.98));color:#f2f0ec;font-size:12px;line-height:1;transition:background .15s,border-color .15s,box-shadow .15s;box-sizing:border-box}
+    .ss-btn:hover{border-color:rgba(216,209,199,.55);box-shadow:0 6px 14px rgba(0,0,0,.3),0 0 8px rgba(216,209,199,.25)}
+    .ss-btn.active{background:#bdb6ad;color:#151414;box-shadow:0 0 0 1px rgba(216,209,199,.45),0 8px 16px rgba(0,0,0,.25)}
     .ss-btn.disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
-    .ss-label{opacity:.85;align-self:center;min-width:110px;text-align:center;padding:0 4px;font-size:12px}
-    .ss-overlay{position:fixed;z-index:2147483646;pointer-events:none;border:2px dashed rgba(255,123,54,.9);background:rgba(255,123,54,.12);border-radius:6px;transition:.08s}
-    .ss-overlay.locked{border:2px solid rgba(71,201,185,.95);background:rgba(71,201,185,.10);box-shadow:0 0 0 2px rgba(71,201,185,.35),0 6px 14px rgba(0,0,0,.12)}
+    .ss-label{opacity:.85;flex:1 1 100%;order:99;text-align:center;padding:2px 4px 0;font-size:12px;min-height:14px}
+    .ss-overlay{position:fixed;z-index:2147483646;pointer-events:none;border:2px dashed rgba(216,209,199,.85);background:rgba(216,209,199,.12);border-radius:6px;transition:.08s}
+    .ss-overlay.locked{border:2px solid rgba(120,120,125,.95);background:rgba(120,120,125,.12);box-shadow:0 0 0 2px rgba(216,209,199,.35),0 6px 14px rgba(0,0,0,.12)}
   `;
 
   const style = document.createElement('style');
