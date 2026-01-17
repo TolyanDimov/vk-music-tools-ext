@@ -1,0 +1,14 @@
+{
+  "extName": {
+    "message": "СмартСкролл и VK Музыка",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "Автоскролл для любых сайтов и инструменты VK Музыки: экспорт, массовое добавление и снятие треков.",
+    "description": "Extension description"
+  },
+  "actionTitle": {
+    "message": "СмартСкролл и VK Музыка",
+    "description": "Action title"
+  }
+}

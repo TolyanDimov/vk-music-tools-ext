@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>СмартСкролл и VK Музыка</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="shell">
+    <header class="hero">
+      <img class="hero-icon" src="../icons/icon48.png" alt="" />
+      <div>
+        <div class="title">СмартСкролл и VK Музыка</div>
+        <div class="subtitle">Единая панель быстрых действий</div>
+      </div>
+    </header>
+
+    <section class="group">
+      <div class="group-title">СмартСкролл</div>
+      <div class="grid">
+        <button class="btn" data-action="smart-up">Вверх</button>
+        <button class="btn" data-action="smart-open">Открыть панель</button>
+        <button class="btn" data-action="smart-down">Вниз</button>
+        <button class="btn" data-action="smart-close">Закрыть панель</button>
+        <button class="btn full" data-action="smart-pick">Выбрать контейнер</button>
+      </div>
+    </section>
+
+    <section class="group">
+      <div class="group-title">VK Музыка</div>
+      <div class="grid">
+        <button class="btn vk" data-action="vk-add">Массово добавить</button>
+        <button class="btn vk" data-action="vk-remove">Массово снять</button>
+        <button class="btn vk full" data-action="vk-export">Экспорт в txt</button>
+      </div>
+    </section>
+
+    <section class="group">
+      <div class="group-title">Общий контроль</div>
+      <div class="grid">
+        <button class="btn" data-action="stop-all">Стоп</button>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span id="message">Готово к работе.</span>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
