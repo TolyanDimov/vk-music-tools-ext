@@ -1,6 +1,21 @@
 const messageEl = document.getElementById('message');
 const vkButtons = Array.from(document.querySelectorAll('.btn.vk'));
 
+function i18n(key, fallback) {
+  const value = chrome.i18n.getMessage(key);
+  return value || fallback || key;
+}
+
+function applyI18n() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const fallback = el.textContent;
+    const text = i18n(key, fallback);
+    el.textContent = text;
+  });
+  document.title = i18n('popupTitle', document.title);
+}
+
 function setMessage(text) {
   messageEl.textContent = text;
 }
@@ -13,7 +28,7 @@ async function getActiveTab() {
 async function runFile(filePath) {
   const tab = await getActiveTab();
   if (!tab || !tab.id) {
-    setMessage('Не удалось найти активную вкладку.');
+    setMessage(i18n('msgNoActiveTab', 'Не удалось найти активную вкладку.'));
     return;
   }
   await chrome.scripting.executeScript({
@@ -25,7 +40,7 @@ async function runFile(filePath) {
 async function callVkOps(action) {
   const tab = await getActiveTab();
   if (!tab || !tab.id) {
-    setMessage('Не удалось найти активную вкладку.');
+    setMessage(i18n('msgNoActiveTab', 'Не удалось найти активную вкладку.'));
     return;
   }
 
@@ -64,7 +79,7 @@ async function callVkOps(action) {
 async function callSmartScroller(action) {
   const tab = await getActiveTab();
   if (!tab || !tab.id) {
-    setMessage('Не удалось найти активную вкладку.');
+    setMessage(i18n('msgNoActiveTab', 'Не удалось найти активную вкладку.'));
     return;
   }
 
@@ -103,7 +118,7 @@ async function callSmartScroller(action) {
 async function stopAll() {
   const tab = await getActiveTab();
   if (!tab || !tab.id) {
-    setMessage('Не удалось найти активную вкладку.');
+    setMessage(i18n('msgNoActiveTab', 'Не удалось найти активную вкладку.'));
     return;
   }
 
@@ -124,7 +139,7 @@ async function init() {
 
   vkButtons.forEach(btn => {
     btn.disabled = !isVk;
-    btn.title = isVk ? '' : 'Откройте VK Музыку, чтобы использовать эту функцию';
+    btn.title = isVk ? '' : i18n('tooltipVkOnly', 'Откройте VK Музыку, чтобы использовать эту функцию');
   });
 
   document.querySelectorAll('[data-action]').forEach(btn => {
@@ -133,35 +148,35 @@ async function init() {
       try {
         if (action === 'smart-open') {
           await callSmartScroller('open');
-          setMessage('СмартСкролл открыт.');
+          setMessage(i18n('msgSmartOpen', 'СмартСкролл открыт.'));
         } else if (action === 'smart-down') {
           await callSmartScroller('startDown');
-          setMessage('СмартСкролл: вниз.');
+          setMessage(i18n('msgSmartDown', 'СмартСкролл: вниз.'));
         } else if (action === 'smart-up') {
           await callSmartScroller('startUp');
-          setMessage('СмартСкролл: вверх.');
+          setMessage(i18n('msgSmartUp', 'СмартСкролл: вверх.'));
         } else if (action === 'smart-pick') {
           await callSmartScroller('pick');
-          setMessage('СмартСкролл: выберите контейнер.');
+          setMessage(i18n('msgSmartPick', 'СмартСкролл: выберите контейнер.'));
         } else if (action === 'smart-close') {
           await callSmartScroller('close');
-          setMessage('Панель СмартСкролла закрыта.');
+          setMessage(i18n('msgSmartClose', 'Панель СмартСкролла закрыта.'));
         } else if (action === 'vk-export') {
           await runFile('scripts/vkPlaylistExporter.js');
-          setMessage('Экспорт запущен.');
+          setMessage(i18n('msgExportStarted', 'Экспорт запущен.'));
         } else if (action === 'vk-add') {
           await callVkOps('vkAdd');
-          setMessage('Массовое добавление запущено.');
+          setMessage(i18n('msgVkAddStarted', 'Массовое добавление запущено.'));
         } else if (action === 'vk-remove') {
           await callVkOps('vkRemove');
-          setMessage('Массовое снятие запущено.');
+          setMessage(i18n('msgVkRemoveStarted', 'Массовое снятие запущено.'));
         } else if (action === 'stop-all') {
           await stopAll();
-          setMessage('Остановка запрошена.');
+          setMessage(i18n('msgStopRequested', 'Остановка запрошена.'));
         }
       } catch (err) {
         console.error(err);
-        setMessage('Ошибка запуска. Подробности в консоли.');
+        setMessage(i18n('msgRunError', 'Ошибка запуска. Подробности в консоли.'));
       }
     });
   });
@@ -170,6 +185,7 @@ async function init() {
 document.addEventListener('DOMContentLoaded', () => {
   init().catch(err => {
     console.error(err);
-    setMessage('Не удалось инициализировать панель.');
+    setMessage(i18n('msgInitFail', 'Не удалось инициализировать панель.'));
   });
+  applyI18n();
 });

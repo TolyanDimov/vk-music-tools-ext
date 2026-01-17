@@ -1,7 +1,26 @@
 (() => {
+  const strings = {
+    ru: {
+      onlyVk: 'Этот инструмент работает только на VK Музыке.',
+      noTracks: 'Треки не найдены. Откройте плейлист и прокрутите список до конца (можно СмартСкроллом).'
+    },
+    en: {
+      onlyVk: 'This tool works only on VK Music.',
+      noTracks: 'No tracks found. Open the playlist and scroll to the end (you can use SmartScroll).'
+    },
+    de: {
+      onlyVk: 'Dieses Tool funktioniert nur in VK Musik.',
+      noTracks: 'Keine Tracks gefunden. Öffne die Playlist und scrolle bis zum Ende (SmartScroll kann helfen).'
+    }
+  };
+
+  const lang = (navigator.language || 'ru').toLowerCase();
+  const dict = strings[lang.slice(0, 2)] || strings.ru;
+  const t = (key) => dict[key] || strings.ru[key] || key;
+
   const VK_HOST_RE = /(^|\.)vk\.com$/i;
   if (!VK_HOST_RE.test(location.host)) {
-    alert('Этот инструмент работает только на VK Музыке.');
+    alert(t('onlyVk'));
     return;
   }
 
@@ -100,7 +119,7 @@
   (async () => {
     const tracks = collectTracks();
     if (!tracks.length) {
-      alert('Треки не найдены. Откройте плейлист и прокрутите список до конца (можно СмартСкроллом).');
+      alert(t('noTracks'));
       return;
     }
 

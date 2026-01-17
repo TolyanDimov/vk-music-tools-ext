@@ -6,6 +6,76 @@
 
   const raf = () => new Promise(r => requestAnimationFrame(r));
 
+  const strings = {
+    ru: {
+      down: 'Вниз',
+      up: 'Вверх',
+      pick: 'Выбор',
+      add: 'Добавить',
+      remove: 'Снять',
+      stop: 'Стоп',
+      close: 'Закрыть',
+      ready: 'готово',
+      scrollDown: 'скролл вниз',
+      scrollUp: 'скролл вверх',
+      pickHint: 'клик для выбора, Esc отмена',
+      cancelled: 'отмена',
+      selected: 'контейнер выбран',
+      stopped: 'остановлено',
+      vkNotOpen: 'VK не открыт',
+      vkNeedEdit: 'Откройте редактирование плейлиста',
+      addProgress: (p, t) => `Добавление: ${p}/${t}`,
+      removeProgress: (p, t) => `Снятие: ${p}/${t}`
+    },
+    en: {
+      down: 'Down',
+      up: 'Up',
+      pick: 'Pick',
+      add: 'Add',
+      remove: 'Remove',
+      stop: 'Stop',
+      close: 'Close',
+      ready: 'ready',
+      scrollDown: 'scrolling down',
+      scrollUp: 'scrolling up',
+      pickHint: 'click to select, Esc to cancel',
+      cancelled: 'cancelled',
+      selected: 'container selected',
+      stopped: 'stopped',
+      vkNotOpen: 'VK not open',
+      vkNeedEdit: 'Open playlist edit mode',
+      addProgress: (p, t) => `Adding: ${p}/${t}`,
+      removeProgress: (p, t) => `Removing: ${p}/${t}`
+    },
+    de: {
+      down: 'Runter',
+      up: 'Hoch',
+      pick: 'Wählen',
+      add: 'Hinzufügen',
+      remove: 'Entfernen',
+      stop: 'Stopp',
+      close: 'Schließen',
+      ready: 'bereit',
+      scrollDown: 'nach unten',
+      scrollUp: 'nach oben',
+      pickHint: 'klicken zum Wählen, Esc zum Abbrechen',
+      cancelled: 'abgebrochen',
+      selected: 'Container gewählt',
+      stopped: 'gestoppt',
+      vkNotOpen: 'VK nicht geöffnet',
+      vkNeedEdit: 'Playlist-Bearbeitung öffnen',
+      addProgress: (p, t) => `Hinzufügen: ${p}/${t}`,
+      removeProgress: (p, t) => `Entfernen: ${p}/${t}`
+    }
+  };
+
+  const lang = (navigator.language || 'ru').toLowerCase();
+  const dict = strings[lang.slice(0, 2)] || strings.ru;
+  const t = (key, ...args) => {
+    const val = dict[key] || strings.ru[key] || key;
+    return typeof val === 'function' ? val(...args) : val;
+  };
+
   const CSS = `
     .ss-panel{position:fixed;left:12px;top:12px;z-index:2147483647;display:flex;flex-wrap:wrap;gap:6px;padding:8px;background:rgba(16,16,18,.92);border-radius:12px;color:#f2f0ec;font:13px/1.2 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;box-shadow:0 10px 22px rgba(0,0,0,.45),0 0 12px rgba(255,255,255,.08);max-width:420px;border:1px solid rgba(120,120,125,.55);align-items:center}
     .ss-btn{cursor:pointer;border:1px solid transparent;border-radius:8px;padding:6px 10px;background:linear-gradient(180deg, rgba(38,38,42,.92), rgba(18,18,20,.98));color:#f2f0ec;font-size:12px;line-height:1;transition:background .15s,border-color .15s,box-shadow .15s;box-sizing:border-box}
@@ -30,16 +100,16 @@
       b.textContent = txt;
       return b;
     };
-    const down = mk('Вниз');
-    const up = mk('Вверх');
-    const pick = mk('Выбор');
-    const vkAdd = mk('Добавить');
-    const vkRemove = mk('Снять');
-    const stop = mk('Стоп');
-    const close = mk('Закрыть');
+    const down = mk(t('down'));
+    const up = mk(t('up'));
+    const pick = mk(t('pick'));
+    const vkAdd = mk(t('add'));
+    const vkRemove = mk(t('remove'));
+    const stop = mk(t('stop'));
+    const close = mk(t('close'));
     const label = document.createElement('span');
     label.className = 'ss-label';
-    label.textContent = 'готово';
+    label.textContent = t('ready');
     box.append(down, up, pick, vkAdd, vkRemove, stop, close, label);
     document.body.appendChild(box);
     return { box, down, up, pick, vkAdd, vkRemove, stop, close, label };
@@ -283,8 +353,8 @@
   };
 
   const vkLabels = {
-    add: 'Добавить',
-    remove: 'Снять'
+    add: t('add'),
+    remove: t('remove')
   };
 
   function updateVkButtons() {
@@ -293,12 +363,12 @@
 
     if (vk.running === 'add') {
       setActive(panel.vkAdd);
-      panel.label.textContent = `Добавление: ${vk.processed}/${vk.total}`;
+      panel.label.textContent = t('addProgress', vk.processed, vk.total);
     } else if (vk.running === 'remove') {
       setActive(panel.vkRemove);
-      panel.label.textContent = `Снятие: ${vk.processed}/${vk.total}`;
+      panel.label.textContent = t('removeProgress', vk.processed, vk.total);
     } else {
-      panel.label.textContent = 'готово';
+      panel.label.textContent = t('ready');
     }
   }
 
@@ -357,13 +427,13 @@
 
   function vkStart(mode) {
     if (!VK_HOST_RE.test(location.host)) {
-      panel.label.textContent = 'VK не открыт';
+      panel.label.textContent = t('vkNotOpen');
       return;
     }
 
     const list = findVkList();
     if (!list) {
-      panel.label.textContent = 'Откройте редактирование плейлиста';
+      panel.label.textContent = t('vkNeedEdit');
       return;
     }
 
@@ -398,7 +468,7 @@
     if (!target) target = document.scrollingElement || document.documentElement;
     running = true;
     dir = direction;
-    panel.label.textContent = direction === 'down' ? 'скролл вниз' : 'скролл вверх';
+    panel.label.textContent = direction === 'down' ? t('scrollDown') : t('scrollUp');
     setActive(direction === 'down' ? panel.down : panel.up);
     const start = performance.now();
     let idle = 0;
@@ -450,14 +520,14 @@
 
     running = false;
     dir = null;
-    panel.label.textContent = 'готово';
+    panel.label.textContent = t('ready');
     setActive(null);
   }
 
   function startPick() {
     if (picking) return;
     picking = true;
-    panel.label.textContent = 'клик для выбора, Esc отмена';
+    panel.label.textContent = t('pickHint');
     setActive(panel.pick);
     overlay.hide();
 
@@ -470,7 +540,7 @@
     const key = (e) => {
       if (e.key === 'Escape') {
         stopScroll();
-        panel.label.textContent = 'отмена';
+        panel.label.textContent = t('cancelled');
       }
     };
 
@@ -483,7 +553,7 @@
         target = cand;
         overlay.lock(cand);
         stopScroll();
-        panel.label.textContent = 'контейнер выбран';
+        panel.label.textContent = t('selected');
         console.log('smartScroller: selected', target);
       }
     };
@@ -505,7 +575,7 @@
   function stopScroll() {
     running = false;
     dir = null;
-    panel.label.textContent = 'остановлено';
+    panel.label.textContent = t('stopped');
     if (startPick.stop) startPick.stop();
   }
 
@@ -568,7 +638,7 @@
   window.__smartScrollerApi = {
     open() {
       if (panel.box) panel.box.style.display = 'flex';
-      panel.label.textContent = 'готово';
+      panel.label.textContent = t('ready');
       setActive(null);
     },
     startDown() {

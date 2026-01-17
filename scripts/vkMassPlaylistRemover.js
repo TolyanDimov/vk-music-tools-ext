@@ -1,7 +1,26 @@
 (() => {
+  const strings = {
+    ru: {
+      onlyVk: 'Этот инструмент работает только на VK Музыке.',
+      noList: 'Не найден список треков. Откройте окно редактирования плейлиста.'
+    },
+    en: {
+      onlyVk: 'This tool works only on VK Music.',
+      noList: 'Track list not found. Open the playlist edit window.'
+    },
+    de: {
+      onlyVk: 'Dieses Tool funktioniert nur in VK Musik.',
+      noList: 'Trackliste nicht gefunden. Öffne das Playlist-Bearbeitungsfenster.'
+    }
+  };
+
+  const lang = (navigator.language || 'ru').toLowerCase();
+  const dict = strings[lang.slice(0, 2)] || strings.ru;
+  const t = (key) => dict[key] || strings.ru[key] || key;
+
   const VK_HOST_RE = /(^|\.)vk\.com$/i;
   if (!VK_HOST_RE.test(location.host)) {
-    alert('Этот инструмент работает только на VK Музыке.');
+    alert(t('onlyVk'));
     return;
   }
 
@@ -28,7 +47,7 @@
     document.querySelector('._ape_item_list');
 
   if (!list) {
-    alert('Не найден список треков. Откройте окно редактирования плейлиста.');
+    alert(t('noList'));
     return;
   }
 

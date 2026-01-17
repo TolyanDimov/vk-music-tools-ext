@@ -1,0 +1,98 @@
+{
+  "extName": {
+    "message": "SmartScroll & VK Musik",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "Autoscroll für alle Seiten und VK Musik-Tools: Export, Massen-Hinzufügen/Entfernen.",
+    "description": "Extension description"
+  },
+  "actionTitle": {
+    "message": "SmartScroll & VK Musik",
+    "description": "Action title"
+  },
+  "popupTitle": {
+    "message": "SmartScroll & VK Musik"
+  },
+  "popupSubtitle": {
+    "message": "Einheitliches Schnellaktions-Panel"
+  },
+  "groupSmart": {
+    "message": "SmartScroll"
+  },
+  "groupVk": {
+    "message": "VK Musik"
+  },
+  "groupGeneral": {
+    "message": "Allgemeine Steuerung"
+  },
+  "btnUp": {
+    "message": "Hoch"
+  },
+  "btnOpenPanel": {
+    "message": "Panel öffnen"
+  },
+  "btnDown": {
+    "message": "Runter"
+  },
+  "btnClosePanel": {
+    "message": "Panel schließen"
+  },
+  "btnPickContainer": {
+    "message": "Container wählen"
+  },
+  "btnVkAdd": {
+    "message": "Massiv hinzufügen"
+  },
+  "btnVkRemove": {
+    "message": "Massiv entfernen"
+  },
+  "btnVkExport": {
+    "message": "Export nach TXT"
+  },
+  "btnStop": {
+    "message": "Stopp"
+  },
+  "footerReady": {
+    "message": "Bereit."
+  },
+  "tooltipVkOnly": {
+    "message": "Öffnen Sie VK Musik, um diese Funktion zu nutzen"
+  },
+  "msgSmartOpen": {
+    "message": "SmartScroll geöffnet."
+  },
+  "msgSmartDown": {
+    "message": "SmartScroll: runter."
+  },
+  "msgSmartUp": {
+    "message": "SmartScroll: hoch."
+  },
+  "msgSmartPick": {
+    "message": "SmartScroll: Container auswählen."
+  },
+  "msgSmartClose": {
+    "message": "SmartScroll-Panel geschlossen."
+  },
+  "msgExportStarted": {
+    "message": "Export gestartet."
+  },
+  "msgVkAddStarted": {
+    "message": "Massen-Hinzufügen gestartet."
+  },
+  "msgVkRemoveStarted": {
+    "message": "Massen-Entfernen gestartet."
+  },
+  "msgStopRequested": {
+    "message": "Stopp angefordert."
+  },
+  "msgRunError": {
+    "message": "Startfehler. Details in der Konsole."
+  },
+  "msgInitFail": {
+    "message": "Initialisierung fehlgeschlagen."
+  },
+  "msgNoActiveTab": {
+    "message": "Aktiver Tab nicht gefunden."
+  }
+}

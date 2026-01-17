@@ -1,0 +1,98 @@
+{
+  "extName": {
+    "message": "SmartScroll & VK Music",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "Autoscroll for any site and VK Music tools: export, mass add/remove tracks.",
+    "description": "Extension description"
+  },
+  "actionTitle": {
+    "message": "SmartScroll & VK Music",
+    "description": "Action title"
+  },
+  "popupTitle": {
+    "message": "SmartScroll & VK Music"
+  },
+  "popupSubtitle": {
+    "message": "Unified quick actions panel"
+  },
+  "groupSmart": {
+    "message": "SmartScroll"
+  },
+  "groupVk": {
+    "message": "VK Music"
+  },
+  "groupGeneral": {
+    "message": "General control"
+  },
+  "btnUp": {
+    "message": "Up"
+  },
+  "btnOpenPanel": {
+    "message": "Open panel"
+  },
+  "btnDown": {
+    "message": "Down"
+  },
+  "btnClosePanel": {
+    "message": "Close panel"
+  },
+  "btnPickContainer": {
+    "message": "Select container"
+  },
+  "btnVkAdd": {
+    "message": "Mass add"
+  },
+  "btnVkRemove": {
+    "message": "Mass remove"
+  },
+  "btnVkExport": {
+    "message": "Export to TXT"
+  },
+  "btnStop": {
+    "message": "Stop"
+  },
+  "footerReady": {
+    "message": "Ready to work."
+  },
+  "tooltipVkOnly": {
+    "message": "Open VK Music to use this feature"
+  },
+  "msgSmartOpen": {
+    "message": "SmartScroll opened."
+  },
+  "msgSmartDown": {
+    "message": "SmartScroll: down."
+  },
+  "msgSmartUp": {
+    "message": "SmartScroll: up."
+  },
+  "msgSmartPick": {
+    "message": "SmartScroll: select a container."
+  },
+  "msgSmartClose": {
+    "message": "SmartScroll panel closed."
+  },
+  "msgExportStarted": {
+    "message": "Export started."
+  },
+  "msgVkAddStarted": {
+    "message": "Mass add started."
+  },
+  "msgVkRemoveStarted": {
+    "message": "Mass remove started."
+  },
+  "msgStopRequested": {
+    "message": "Stop requested."
+  },
+  "msgRunError": {
+    "message": "Launch error. See console for details."
+  },
+  "msgInitFail": {
+    "message": "Failed to initialize the panel."
+  },
+  "msgNoActiveTab": {
+    "message": "Could not find the active tab."
+  }
+}

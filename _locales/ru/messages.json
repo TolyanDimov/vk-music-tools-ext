@@ -10,5 +10,89 @@
   "actionTitle": {
     "message": "СмартСкролл и VK Музыка",
     "description": "Action title"
+  },
+  "popupTitle": {
+    "message": "СмартСкролл и VK Музыка"
+  },
+  "popupSubtitle": {
+    "message": "Единая панель быстрых действий"
+  },
+  "groupSmart": {
+    "message": "СмартСкролл"
+  },
+  "groupVk": {
+    "message": "VK Музыка"
+  },
+  "groupGeneral": {
+    "message": "Общий контроль"
+  },
+  "btnUp": {
+    "message": "Вверх"
+  },
+  "btnOpenPanel": {
+    "message": "Открыть панель"
+  },
+  "btnDown": {
+    "message": "Вниз"
+  },
+  "btnClosePanel": {
+    "message": "Закрыть панель"
+  },
+  "btnPickContainer": {
+    "message": "Выбрать контейнер"
+  },
+  "btnVkAdd": {
+    "message": "Массово добавить"
+  },
+  "btnVkRemove": {
+    "message": "Массово снять"
+  },
+  "btnVkExport": {
+    "message": "Экспорт в txt"
+  },
+  "btnStop": {
+    "message": "Стоп"
+  },
+  "footerReady": {
+    "message": "Готово к работе."
+  },
+  "tooltipVkOnly": {
+    "message": "Откройте VK Музыку, чтобы использовать эту функцию"
+  },
+  "msgSmartOpen": {
+    "message": "СмартСкролл открыт."
+  },
+  "msgSmartDown": {
+    "message": "СмартСкролл: вниз."
+  },
+  "msgSmartUp": {
+    "message": "СмартСкролл: вверх."
+  },
+  "msgSmartPick": {
+    "message": "СмартСкролл: выберите контейнер."
+  },
+  "msgSmartClose": {
+    "message": "Панель СмартСкролла закрыта."
+  },
+  "msgExportStarted": {
+    "message": "Экспорт запущен."
+  },
+  "msgVkAddStarted": {
+    "message": "Массовое добавление запущено."
+  },
+  "msgVkRemoveStarted": {
+    "message": "Массовое снятие запущено."
+  },
+  "msgStopRequested": {
+    "message": "Остановка запрошена."
+  },
+  "msgRunError": {
+    "message": "Ошибка запуска. Подробности в консоли."
+  },
+  "msgInitFail": {
+    "message": "Не удалось инициализировать панель."
+  },
+  "msgNoActiveTab": {
+    "message": "Не удалось найти активную вкладку."
   }
 }

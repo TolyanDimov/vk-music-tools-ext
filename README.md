@@ -1,46 +1,56 @@
-# СмартСкролл и VK Музыка
+# SmartScroll & VK Music
 
-Расширение объединяет универсальный СмартСкролл и инструменты для работы с плейлистами VK Музыки.
-Собрано из старых [снипетов](https://github.com/TolyanDimov/Snippets), которые использовал через F12 в [DevTools](https://developer.chrome.com/docs/devtools/console/javascript?hl=en).
+[English](README.md) · [Русский](README_RU.md) · [Deutsch](README_DE.md)
 
-## Возможности
+The extension combines SmartScroll and VK Music playlist tools.
+Built from older [snippets](https://github.com/TolyanDimov/Snippets) that were used via F12 in [DevTools](https://developer.chrome.com/docs/devtools/console/javascript?hl=en).
 
-- **СмартСкролл:** автопрокрутка вверх/вниз, выбор контейнера, управление с плавающей панели.
-- **VK Музыка:** массовое добавление/снятие треков в режиме редактирования плейлиста.
-- **Экспорт:** сохранение списка треков в TXT (формат `Исполнитель - Название`).
+## Features
 
-## Установка (режим разработчика)
+- **SmartScroll:** auto scroll up/down, container selection, floating control panel.
+- **VK Music:** mass add/remove tracks in playlist edit mode.
+- **Export:** save track list to TXT (`Artist - Title`).
 
-1. Откройте в адресной строке браузера `chrome://extensions/`.
-2. Включите режим разработчика.
-3. Нажмите **Загрузить распакованную** папку `vk-music-tools-ext`.
+## Localization support
 
-## Как пользоваться
+The extension supports three languages: Russian, English, and German.
 
-### СмартСкролл
+## Installation (developer mode)
 
-1. Нажмите **Открыть панель** в popup.
-2. В панели доступны кнопки **Вверх**, **Вниз**, **Выбор** (контейнера), **Стоп**, **Закрыть**.
+1. Open `chrome://extensions/` in the address bar.
+2. Enable Developer mode.
+3. Click **Load unpacked** and select the `vk-music-tools-ext` folder.
 
-### VK Музыка
+## How to use
 
-1. Откройте VK Музыку и перейдите в редактирование плейлиста.
-2. **Сначала прокрутите список до конца** (можно СмартСкроллом).
-3. Используйте плавающую панель: **Добавить** треки, **Снять** треки, **Стоп** (прервать все операции).
-4. Прогресс отображается в строке статуса плавающей панели.
+### SmartScroll
 
-### Экспорт
+1. Click **Open panel** in the popup.
+2. The panel provides **Up**, **Down**, **Pick** (container), **Stop**, **Close**.
 
-1. Откройте плейлист или раздел Музыки VK.
-2. **Сначала прокрутите список до конца** (можно СмартСкроллом).
-3. Нажмите **Экспорт в txt** в popup.
+### VK Music
 
-## Примечания
+1. Open VK Music and enter playlist edit mode.
+2. **First scroll to the end** (you can use SmartScroll).
+3. Use the floating panel: **Add** tracks, **Remove** tracks, **Stop** (cancel all operations).
+4. Progress is shown in the floating panel status line.
 
-- Кнопки VK доступны только при открытом редактировании плейлиста.
-- Для стабильной работы не закрывайте вкладку во время выполнения операций.
-- В больших плейлистах возможны зависания браузера.
+### Export
 
-## Лицензии
+1. Open a playlist or VK Music section.
+2. **First scroll to the end** (you can use SmartScroll).
+3. Click **Export to TXT** in the popup.
 
-- Шрифт Rubik: `assets/fonts/OFL.txt`.
+## Notes
+
+- VK buttons are available only in playlist edit mode.
+- Do not close the tab while operations are running.
+- Large playlists may cause the browser to slow down.
+
+## Licenses
+
+- Rubik font: `assets/fonts/OFL.txt`.
+
+## Author
+
+Anatoly Dimov — https://github.com/TolyanDimov
