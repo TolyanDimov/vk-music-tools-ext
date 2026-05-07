@@ -4,7 +4,7 @@
     "description": "Extension name"
   },
   "extDescription": {
-    "message": "Autoscroll for any site and VK Music tools: export, mass add/remove tracks.",
+    "message": "Autoscroll for any site and VK Music tools: export, mass add/remove, and delete tracks.",
     "description": "Extension description"
   },
   "actionTitle": {
@@ -50,6 +50,9 @@
   "btnVkExport": {
     "message": "Export to TXT"
   },
+  "btnVkDelete": {
+    "message": "Delete music"
+  },
   "btnStop": {
     "message": "Stop"
   },
@@ -82,6 +85,9 @@
   },
   "msgVkRemoveStarted": {
     "message": "Mass remove started."
+  },
+  "msgVkDeleteStarted": {
+    "message": "Music deletion started."
   },
   "msgStopRequested": {
     "message": "Stop requested."

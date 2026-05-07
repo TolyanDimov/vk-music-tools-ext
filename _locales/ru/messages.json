@@ -4,7 +4,7 @@
     "description": "Extension name"
   },
   "extDescription": {
-    "message": "Автоскролл для любых сайтов и инструменты VK Музыки: экспорт, массовое добавление и снятие треков.",
+    "message": "Автоскролл для любых сайтов и инструменты VK Музыки: экспорт, массовое добавление, снятие и удаление треков.",
     "description": "Extension description"
   },
   "actionTitle": {
@@ -50,6 +50,9 @@
   "btnVkExport": {
     "message": "Экспорт в txt"
   },
+  "btnVkDelete": {
+    "message": "Удалить музыку"
+  },
   "btnStop": {
     "message": "Стоп"
   },
@@ -82,6 +85,9 @@
   },
   "msgVkRemoveStarted": {
     "message": "Массовое снятие запущено."
+  },
+  "msgVkDeleteStarted": {
+    "message": "Удаление музыки запущено."
   },
   "msgStopRequested": {
     "message": "Остановка запрошена."

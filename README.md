@@ -9,7 +9,7 @@ Built from older [snippets](https://github.com/TolyanDimov/Snippets) that were u
 ## Features
 
 - **SmartScroll:** auto scroll up/down, container selection, floating control panel.
-- **VK Music:** mass add/remove tracks in playlist edit mode.
+- **VK Music:** mass add/remove tracks in playlist edit mode, delete loaded tracks from your music.
 - **Export:** save track list to TXT (`Artist - Title`).
 
 ## Localization support
@@ -42,9 +42,17 @@ The extension supports three languages: Russian, English, and German.
 2. **First scroll to the end** (you can use SmartScroll).
 3. Click **Export to TXT** in the popup.
 
+### Delete Music
+
+1. Open a VK Music section with a track list.
+2. **First scroll to the end** (you can use SmartScroll).
+3. Click **Delete music** in the popup and confirm the action.
+4. Deletion progress is shown in the page console.
+
 ## Notes
 
-- VK buttons are available only in playlist edit mode.
+- Playlist add/remove buttons are available only in playlist edit mode.
+- Delete works with tracks loaded on the page and asks for confirmation before starting.
 - Do not close the tab while operations are running.
 - Large playlists may cause the browser to slow down.
 

@@ -4,7 +4,7 @@
     "description": "Extension name"
   },
   "extDescription": {
-    "message": "Autoscroll für alle Seiten und VK Musik-Tools: Export, Massen-Hinzufügen/Entfernen.",
+    "message": "Autoscroll für alle Seiten und VK Musik-Tools: Export, Massen-Hinzufügen/Entfernen und Löschen.",
     "description": "Extension description"
   },
   "actionTitle": {
@@ -50,6 +50,9 @@
   "btnVkExport": {
     "message": "Export nach TXT"
   },
+  "btnVkDelete": {
+    "message": "Musik löschen"
+  },
   "btnStop": {
     "message": "Stopp"
   },
@@ -82,6 +85,9 @@
   },
   "msgVkRemoveStarted": {
     "message": "Massen-Entfernen gestartet."
+  },
+  "msgVkDeleteStarted": {
+    "message": "Musik-Löschung gestartet."
   },
   "msgStopRequested": {
     "message": "Stopp angefordert."

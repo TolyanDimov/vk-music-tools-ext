@@ -37,6 +37,20 @@ async function runFile(filePath) {
   });
 }
 
+async function runPageFile(filePath) {
+  const tab = await getActiveTab();
+  if (!tab || !tab.id) {
+    setMessage(i18n('msgNoActiveTab', 'Не удалось найти активную вкладку.'));
+    return;
+  }
+
+  await chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    files: [filePath],
+    world: 'MAIN'
+  });
+}
+
 async function callVkOps(action) {
   const tab = await getActiveTab();
   if (!tab || !tab.id) {
@@ -130,6 +144,16 @@ async function stopAll() {
       }
     }
   });
+
+  await chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    world: 'MAIN',
+    func: () => {
+      if (window.__vkAudioDeleter && typeof window.__vkAudioDeleter.stop === 'function') {
+        window.__vkAudioDeleter.stop();
+      }
+    }
+  });
 }
 
 async function init() {
@@ -164,6 +188,9 @@ async function init() {
         } else if (action === 'vk-export') {
           await runFile('scripts/vkPlaylistExporter.js');
           setMessage(i18n('msgExportStarted', 'Экспорт запущен.'));
+        } else if (action === 'vk-delete') {
+          await runPageFile('scripts/vkAudioDeleter.js');
+          setMessage(i18n('msgVkDeleteStarted', 'Удаление музыки запущено.'));
         } else if (action === 'vk-add') {
           await callVkOps('vkAdd');
           setMessage(i18n('msgVkAddStarted', 'Массовое добавление запущено.'));

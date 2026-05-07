@@ -9,7 +9,7 @@ Erstellt aus älteren [Snippets](https://github.com/TolyanDimov/Snippets), die �
 ## Funktionen
 
 - **SmartScroll:** Auto-Scroll hoch/runter, Container-Auswahl, schwebendes Bedienfeld.
-- **VK Musik:** Massen-Hinzufügen/Entfernen im Playlist-Bearbeitungsmodus.
+- **VK Musik:** Massen-Hinzufügen/Entfernen im Playlist-Bearbeitungsmodus, geladene Tracks aus der Musik löschen.
 - **Export:** Trackliste als TXT (`Künstler - Titel`).
 
 ## Lokalisierungsunterstützung
@@ -42,9 +42,17 @@ Die Erweiterung unterstützt drei Sprachen: Russisch, Englisch und Deutsch.
 2. **Zuerst bis zum Ende scrollen** (SmartScroll verwenden).
 3. **Export nach TXT** im Popup.
 
+### Musik Löschen
+
+1. VK Musik mit einer Trackliste öffnen.
+2. **Zuerst bis zum Ende scrollen** (SmartScroll verwenden).
+3. **Musik löschen** im Popup drücken und die Aktion bestätigen.
+4. Der Löschfortschritt wird in der Seitenkonsole angezeigt.
+
 ## Hinweise
 
-- VK-Buttons funktionieren nur in der Playlist-Bearbeitung.
+- Playlist-Hinzufügen/Entfernen funktioniert nur in der Playlist-Bearbeitung.
+- Löschen arbeitet mit den auf der Seite geladenen Tracks und fragt vor dem Start nach Bestätigung.
 - Tab während der Ausführung nicht schließen.
 - Große Playlists können den Browser verlangsamen.
 

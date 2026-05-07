@@ -166,6 +166,16 @@ body {
     linear-gradient(180deg, rgba(42, 42, 46, 0.9), rgba(16, 16, 18, 0.98));
 }
 
+.btn.danger {
+  background:
+    linear-gradient(180deg, rgba(88, 40, 44, 0.92), rgba(31, 16, 18, 0.98));
+}
+
+.btn.danger:hover {
+  border-color: rgba(255, 132, 132, 0.85);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35), 0 0 12px rgba(255, 132, 132, 0.25);
+}
+
 .btn[disabled] {
   opacity: 0.45;
   cursor: not-allowed;
