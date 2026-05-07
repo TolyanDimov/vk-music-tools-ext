@@ -9,7 +9,7 @@ Erstellt aus älteren [Snippets](https://github.com/TolyanDimov/Snippets), die �
 ## Funktionen
 
 - **SmartScroll:** Auto-Scroll hoch/runter, Container-Auswahl, schwebendes Bedienfeld.
-- **VK Musik:** Massen-Hinzufügen/Entfernen im Playlist-Bearbeitungsmodus, geladene Tracks aus der Musik löschen.
+- **VK Musik:** Massen-Hinzufügen/Entfernen im Playlist-Bearbeitungsmodus, geladene Tracks und sichere Duplikate aus der Musik löschen.
 - **Export:** Trackliste als TXT (`Künstler - Titel`).
 
 ## Lokalisierungsunterstützung
@@ -47,7 +47,15 @@ Die Erweiterung unterstützt drei Sprachen: Russisch, Englisch und Deutsch.
 1. VK Musik mit einer Trackliste öffnen.
 2. **Zuerst bis zum Ende scrollen** (SmartScroll verwenden).
 3. **Musik löschen** im Popup drücken und die Aktion bestätigen.
-4. Der Löschfortschritt wird in der Seitenkonsole angezeigt.
+4. Anzahl der zu löschenden Tracks eingeben oder leer lassen, um alle gefundenen Tracks zu löschen.
+5. Der Löschfortschritt wird im SmartScroll-Panel angezeigt.
+
+### Duplikate Löschen
+
+1. VK Musik mit einer Trackliste öffnen.
+2. **Zuerst bis zum Ende scrollen** (SmartScroll verwenden).
+3. **Duplikate löschen** im Popup drücken und die Aktion bestätigen.
+4. Ein sicheres Duplikat hat denselben Titel und dieselbe Dauer.
 
 ## Hinweise
 

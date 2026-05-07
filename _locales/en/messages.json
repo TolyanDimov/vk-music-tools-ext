@@ -53,6 +53,9 @@
   "btnVkDelete": {
     "message": "Delete music"
   },
+  "btnVkDeleteDuplicates": {
+    "message": "Delete duplicates"
+  },
   "btnStop": {
     "message": "Stop"
   },
@@ -88,6 +91,9 @@
   },
   "msgVkDeleteStarted": {
     "message": "Music deletion started."
+  },
+  "msgVkDeleteDuplicatesStarted": {
+    "message": "Duplicate deletion started."
   },
   "msgStopRequested": {
     "message": "Stop requested."

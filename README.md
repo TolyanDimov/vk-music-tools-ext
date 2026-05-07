@@ -9,7 +9,7 @@ Built from older [snippets](https://github.com/TolyanDimov/Snippets) that were u
 ## Features
 
 - **SmartScroll:** auto scroll up/down, container selection, floating control panel.
-- **VK Music:** mass add/remove tracks in playlist edit mode, delete loaded tracks from your music.
+- **VK Music:** mass add/remove tracks in playlist edit mode, delete loaded tracks and safe duplicates from your music.
 - **Export:** save track list to TXT (`Artist - Title`).
 
 ## Localization support
@@ -47,7 +47,15 @@ The extension supports three languages: Russian, English, and German.
 1. Open a VK Music section with a track list.
 2. **First scroll to the end** (you can use SmartScroll).
 3. Click **Delete music** in the popup and confirm the action.
-4. Deletion progress is shown in the page console.
+4. Enter how many tracks to delete or leave the field empty to delete all found tracks.
+5. Deletion progress is shown in the SmartScroll panel.
+
+### Delete Duplicates
+
+1. Open a VK Music section with a track list.
+2. **First scroll to the end** (you can use SmartScroll).
+3. Click **Delete duplicates** in the popup and confirm the action.
+4. A safe duplicate is a track with the same title and duration.
 
 ## Notes
 

@@ -25,7 +25,12 @@
       vkNotOpen: 'VK не открыт',
       vkNeedEdit: 'Откройте редактирование плейлиста',
       addProgress: (p, t) => `Добавление: ${p}/${t}`,
-      removeProgress: (p, t) => `Снятие: ${p}/${t}`
+      removeProgress: (p, t) => `Снятие: ${p}/${t}`,
+      deleteStarting: (t) => `Удаление: 0/${t}`,
+      deleteProgress: (d, f, t) => f ? `Удаление: ${d}/${t}, ошибок: ${f}` : `Удаление: ${d}/${t}`,
+      deleteDone: (d, f, t) => f ? `Удалено: ${d}/${t}, ошибок: ${f}` : `Удалено: ${d}/${t}`,
+      deleteStopped: (d, f, t) => f ? `Остановлено: ${d}/${t}, ошибок: ${f}` : `Остановлено: ${d}/${t}`,
+      deleteError: 'Ошибка удаления'
     },
     en: {
       down: 'Down',
@@ -45,7 +50,12 @@
       vkNotOpen: 'VK not open',
       vkNeedEdit: 'Open playlist edit mode',
       addProgress: (p, t) => `Adding: ${p}/${t}`,
-      removeProgress: (p, t) => `Removing: ${p}/${t}`
+      removeProgress: (p, t) => `Removing: ${p}/${t}`,
+      deleteStarting: (t) => `Deleting: 0/${t}`,
+      deleteProgress: (d, f, t) => f ? `Deleting: ${d}/${t}, errors: ${f}` : `Deleting: ${d}/${t}`,
+      deleteDone: (d, f, t) => f ? `Deleted: ${d}/${t}, errors: ${f}` : `Deleted: ${d}/${t}`,
+      deleteStopped: (d, f, t) => f ? `Stopped: ${d}/${t}, errors: ${f}` : `Stopped: ${d}/${t}`,
+      deleteError: 'Deletion error'
     },
     de: {
       down: 'Runter',
@@ -65,7 +75,12 @@
       vkNotOpen: 'VK nicht geöffnet',
       vkNeedEdit: 'Playlist-Bearbeitung öffnen',
       addProgress: (p, t) => `Hinzufügen: ${p}/${t}`,
-      removeProgress: (p, t) => `Entfernen: ${p}/${t}`
+      removeProgress: (p, t) => `Entfernen: ${p}/${t}`,
+      deleteStarting: (t) => `Löschen: 0/${t}`,
+      deleteProgress: (d, f, t) => f ? `Löschen: ${d}/${t}, Fehler: ${f}` : `Löschen: ${d}/${t}`,
+      deleteDone: (d, f, t) => f ? `Gelöscht: ${d}/${t}, Fehler: ${f}` : `Gelöscht: ${d}/${t}`,
+      deleteStopped: (d, f, t) => f ? `Gestoppt: ${d}/${t}, Fehler: ${f}` : `Gestoppt: ${d}/${t}`,
+      deleteError: 'Löschfehler'
     }
   };
 
@@ -464,6 +479,37 @@
     setDisabled(panel.vkRemove, !available);
   }
 
+  function handleVkAudioDeleteProgress(event) {
+    let detail = {};
+    try {
+      detail = event.detail || {};
+    } catch {
+      detail = {};
+    }
+    if (!detail.status) {
+      try {
+        detail = JSON.parse(document.documentElement.dataset.vkAudioDeleterProgress || '{}');
+      } catch {
+        detail = {};
+      }
+    }
+    const deleted = Number(detail.deleted || 0);
+    const failed = Number(detail.failed || 0);
+    const total = Number(detail.total || 0);
+
+    if (detail.status === 'starting') {
+      panel.label.textContent = t('deleteStarting', total);
+    } else if (detail.status === 'progress') {
+      panel.label.textContent = t('deleteProgress', deleted, failed, total);
+    } else if (detail.status === 'completed') {
+      panel.label.textContent = t('deleteDone', deleted, failed, total);
+    } else if (detail.status === 'stopped') {
+      panel.label.textContent = t('deleteStopped', deleted, failed, total);
+    } else if (detail.status === 'error') {
+      panel.label.textContent = detail.message || t('deleteError');
+    }
+  }
+
   async function run(direction) {
     if (!target) target = document.scrollingElement || document.documentElement;
     running = true;
@@ -595,8 +641,9 @@
     overlay.destroy();
     panel.box.remove();
     style.remove();
-    document.removeEventListener('keydown', escClose, true);
     delete window.__smartScrollerApi;
+    document.removeEventListener('keydown', escClose, true);
+    document.removeEventListener('vk-audio-deleter-progress', handleVkAudioDeleteProgress, false);
     console.log('smartScroller: closed');
   }
 
@@ -607,6 +654,7 @@
   };
 
   document.addEventListener('keydown', escClose, true);
+  document.addEventListener('vk-audio-deleter-progress', handleVkAudioDeleteProgress, false);
 
   panel.down.onclick = () => {
     if (!target) target = document.scrollingElement;

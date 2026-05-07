@@ -53,6 +53,9 @@
   "btnVkDelete": {
     "message": "Удалить музыку"
   },
+  "btnVkDeleteDuplicates": {
+    "message": "Удалить дубликаты"
+  },
   "btnStop": {
     "message": "Стоп"
   },
@@ -88,6 +91,9 @@
   },
   "msgVkDeleteStarted": {
     "message": "Удаление музыки запущено."
+  },
+  "msgVkDeleteDuplicatesStarted": {
+    "message": "Удаление дубликатов запущено."
   },
   "msgStopRequested": {
     "message": "Остановка запрошена."
