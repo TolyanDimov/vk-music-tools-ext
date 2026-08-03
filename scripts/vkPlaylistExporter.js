@@ -18,7 +18,7 @@
   const dict = strings[lang.slice(0, 2)] || strings.ru;
   const t = (key) => dict[key] || strings.ru[key] || key;
 
-  const VK_HOST_RE = /(^|\.)vk\.com$/i;
+  const VK_HOST_RE = /(^|\.)vk\.(com|ru)$/i;
   if (!VK_HOST_RE.test(location.host)) {
     alert(t('onlyVk'));
     return;
@@ -29,7 +29,8 @@
 
     let rows = document.querySelectorAll(
       '[data-testid="MusicPlaylistTracks_MusicTrackRow"],' +
-      ' [data-testid="MusicPage_MusicTrackRow"]'
+      ' [data-testid="MusicPage_MusicTrackRow"],' +
+      ' [data-testid="MusicTrackRow"]'
     );
 
     if (rows.length) {

@@ -178,7 +178,7 @@ async function stopAll() {
 async function init() {
   const tab = await getActiveTab();
   const url = tab && tab.url ? tab.url : '';
-  const isVk = /^https?:\/\/(.+\.)?vk\.com\//i.test(url);
+  const isVk = /^https?:\/\/(.+\.)?vk\.(com|ru)\//i.test(url);
 
   vkButtons.forEach(btn => {
     btn.disabled = !isVk;

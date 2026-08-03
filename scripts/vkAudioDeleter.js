@@ -54,7 +54,7 @@
     return typeof val === 'function' ? val(...args) : val;
   };
 
-  const VK_HOST_RE = /(^|\.)vk\.com$/i;
+  const VK_HOST_RE = /(^|\.)vk\.(com|ru)$/i;
   if (!VK_HOST_RE.test(location.host)) {
     alert(t('onlyVk'));
     return;

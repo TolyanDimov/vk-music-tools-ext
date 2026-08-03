@@ -340,25 +340,44 @@
     batchSize: 20
   };
 
-  const VK_HOST_RE = /(^|\.)vk\.com$/i;
+  const VK_HOST_RE = /(^|\.)vk\.(com|ru)$/i;
   const findVkList = () =>
+    document.querySelector('[data-audio-context="edit_playlist"]') ||
+    document.querySelector('[data-testid="MusicPlaylist_EditModal"] [data-audio-context="edit_playlist"]') ||
+    document.querySelector('.ape_item_list[data-audio-context="edit_playlist"]') ||
     document.querySelector('.ape_item_list') ||
     document.querySelector('._ape_item_list');
 
-  const isVisible = (el) => el && getComputedStyle(el).display !== 'none';
+  const isVisible = (el) => {
+    if (!el) return false;
+    const style = getComputedStyle(el);
+    return style.display !== 'none' &&
+      style.visibility !== 'hidden' &&
+      style.visibility !== 'collapse' &&
+      Number(style.opacity) !== 0;
+  };
+
+  const getCheck = (el) => el?.matches('.ape_check')
+    ? el
+    : el?.querySelector('.ape_check');
+
   const isUnchecked = (el) => {
-    const un = el.querySelector('.ape_check--unchecked');
-    const ch = el.querySelector('.ape_check--checked');
+    const check = getCheck(el);
+    const un = check?.querySelector('.ape_check--unchecked');
+    const ch = check?.querySelector('.ape_check--checked');
     return isVisible(un) && !isVisible(ch);
   };
   const isChecked = (el) => {
-    const un = el.querySelector('.ape_check--unchecked');
-    const ch = el.querySelector('.ape_check--checked');
+    const check = getCheck(el);
+    const un = check?.querySelector('.ape_check--unchecked');
+    const ch = check?.querySelector('.ape_check--checked');
     return isVisible(ch) && !isVisible(un);
   };
 
   const collectTargets = (list, mode) => {
-    const nodes = Array.from(list.querySelectorAll('.ape_check'));
+    const nodes = Array.from(list.querySelectorAll(
+      '[data-testid="MusicPlaylist_EditModal_MusicTrackRow"] .ape_check, .ape_check'
+    ));
     const result = [];
     nodes.forEach(el => {
       if (mode === 'add' && isUnchecked(el)) result.push(el);
@@ -423,11 +442,11 @@
       const el = vk.nodes[vk.index];
       if (el) {
         if (mode === 'add' && isUnchecked(el)) {
-          el.click();
+          getCheck(el).click();
           vk.processed++;
           clicks++;
         } else if (mode === 'remove' && isChecked(el)) {
-          el.click();
+          getCheck(el).click();
           vk.processed++;
           clicks++;
         }

@@ -18,7 +18,7 @@
   const dict = strings[lang.slice(0, 2)] || strings.ru;
   const t = (key) => dict[key] || strings.ru[key] || key;
 
-  const VK_HOST_RE = /(^|\.)vk\.com$/i;
+  const VK_HOST_RE = /(^|\.)vk\.(com|ru)$/i;
   if (!VK_HOST_RE.test(location.host)) {
     alert(t('onlyVk'));
     return;
@@ -35,7 +35,7 @@
     stop() {
       this.stopRequested = true;
       if (this.timer) {
-        clearInterval(this.timer);
+        clearTimeout(this.timer);
         this.timer = null;
       }
       this.running = null;
@@ -43,6 +43,8 @@
   });
 
   const list =
+    document.querySelector('[data-audio-context="edit_playlist"]') ||
+    document.querySelector('.ape_item_list[data-audio-context="edit_playlist"]') ||
     document.querySelector('.ape_item_list') ||
     document.querySelector('._ape_item_list');
 
@@ -52,7 +54,9 @@
   }
 
   function collectTargets() {
-    const nodes = Array.from(list.querySelectorAll('.ape_check'));
+    const nodes = Array.from(list.querySelectorAll(
+      '[data-testid="MusicPlaylist_EditModal_MusicTrackRow"] .ape_check, .ape_check'
+    ));
     console.log('vkMassPlaylistRemover: targets =', nodes.length);
     return nodes;
   }
@@ -79,8 +83,16 @@
         const un = el.querySelector('.ape_check--unchecked');
         const ch = el.querySelector('.ape_check--checked');
 
-        const unVisible = un && getComputedStyle(un).display !== 'none';
-        const chVisible = ch && getComputedStyle(ch).display !== 'none';
+        const isVisible = (node) => {
+          if (!node) return false;
+          const style = getComputedStyle(node);
+          return style.display !== 'none' &&
+            style.visibility !== 'hidden' &&
+            style.visibility !== 'collapse' &&
+            Number(style.opacity) !== 0;
+        };
+        const unVisible = isVisible(un);
+        const chVisible = isVisible(ch);
 
         if (chVisible && !unVisible) {
           el.click();
