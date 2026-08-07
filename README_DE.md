@@ -1,4 +1,4 @@
-![Preview](assets/preview.png)
+![Preview](assets/preview-2026-08-08.png)
 # SmartScroll & VK Musik
 
 [English](README.md) · [Русский](README_RU.md) · [Deutsch](README_DE.md)

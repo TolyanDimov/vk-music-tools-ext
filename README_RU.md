@@ -1,4 +1,4 @@
-![Preview](assets/preview.png)
+![Preview](assets/preview-2026-08-08.png)
 
 # СмартСкролл и VK Музыка
 
