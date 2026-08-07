@@ -10,9 +10,11 @@
     ru: {
       down: 'Вниз',
       up: 'Вверх',
-      pick: 'Выбор',
+      pick: 'Контейнер',
       add: 'Добавить',
       random: 'Случайный порядок',
+      batchLabel: 'За раз:',
+      batchInvalid: 'Укажите размер пакета от 1 до 100.',
       remove: 'Снять',
       stop: 'Стоп',
       close: 'Закрыть',
@@ -38,9 +40,11 @@
     en: {
       down: 'Down',
       up: 'Up',
-      pick: 'Pick',
+      pick: 'Container',
       add: 'Add',
       random: 'Random order',
+      batchLabel: 'Per batch:',
+      batchInvalid: 'Enter a batch size from 1 to 100.',
       remove: 'Remove',
       stop: 'Stop',
       close: 'Close',
@@ -66,9 +70,11 @@
     de: {
       down: 'Runter',
       up: 'Hoch',
-      pick: 'Wählen',
+      pick: 'Container',
       add: 'Hinzufügen',
       random: 'Zufällige Reihenfolge',
+      batchLabel: 'Pro Paket:',
+      batchInvalid: 'Gib eine Paketgröße von 1 bis 100 ein.',
       remove: 'Entfernen',
       stop: 'Stopp',
       close: 'Schließen',
@@ -101,14 +107,19 @@
   };
 
   const CSS = `
-    .ss-panel{position:fixed;left:12px;top:12px;z-index:2147483647;display:flex;flex-wrap:wrap;gap:6px;padding:8px;background:rgba(16,16,18,.92);border-radius:12px;color:#f2f0ec;font:13px/1.2 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;box-shadow:0 10px 22px rgba(0,0,0,.45),0 0 12px rgba(255,255,255,.08);max-width:420px;border:1px solid rgba(120,120,125,.55);align-items:center}
-    .ss-btn{cursor:pointer;border:1px solid transparent;border-radius:8px;padding:6px 10px;background:linear-gradient(180deg, rgba(38,38,42,.92), rgba(18,18,20,.98));color:#f2f0ec;font-size:12px;line-height:1;transition:background .15s,border-color .15s,box-shadow .15s;box-sizing:border-box}
+    .ss-panel{position:fixed;left:12px;top:12px;z-index:2147483647;display:flex;flex-direction:column;gap:7px;width:min(460px,calc(100vw - 24px));padding:10px;background:rgba(16,16,18,.94);border-radius:13px;color:#f2f0ec;font:13px/1.2 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;box-shadow:0 10px 22px rgba(0,0,0,.45),0 0 12px rgba(255,255,255,.08);border:1px solid rgba(120,120,125,.55);align-items:stretch}
+    .ss-row{display:flex;gap:6px;align-items:stretch}
+    .ss-btn{flex:1 1 0;min-width:0;cursor:pointer;border:1px solid transparent;border-radius:8px;padding:7px 10px;background:linear-gradient(180deg, rgba(38,38,42,.92), rgba(18,18,20,.98));color:#f2f0ec;font-size:12px;line-height:1;transition:background .15s,border-color .15s,box-shadow .15s;box-sizing:border-box}
     .ss-btn:hover{border-color:rgba(216,209,199,.55);box-shadow:0 6px 14px rgba(0,0,0,.3),0 0 8px rgba(216,209,199,.25)}
     .ss-btn.active{background:#bdb6ad;color:#151414;box-shadow:0 0 0 1px rgba(216,209,199,.45),0 8px 16px rgba(0,0,0,.25)}
     .ss-btn.disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
-    .ss-label{opacity:.85;flex:1 1 100%;order:99;text-align:center;padding:2px 4px 0;font-size:12px;min-height:14px}
-    .ss-option{display:flex;align-items:center;gap:5px;padding:4px 6px;white-space:nowrap;font-size:12px;cursor:pointer;user-select:none}
+    .ss-label{opacity:.8;border-top:1px solid rgba(120,120,125,.28);padding:7px 4px 0;text-align:center;font-size:11px;min-height:13px}
+    .ss-settings{display:flex;align-items:stretch;justify-content:center;border-top:1px solid rgba(120,120,125,.28);border-bottom:1px solid rgba(120,120,125,.28);padding:5px 0;gap:0}
+    .ss-option{display:flex;align-items:center;justify-content:center;gap:5px;padding:2px 10px;white-space:nowrap;font-size:12px;cursor:pointer;user-select:none}
+    .ss-random-option{flex:1 1 auto}
+    .ss-batch-option{border-left:1px solid rgba(120,120,125,.4);color:rgba(242,240,236,.86)}
     .ss-option input{margin:0;accent-color:#bdb6ad}
+    .ss-batch{width:52px;margin-left:2px;padding:4px 5px;border:1px solid rgba(120,120,125,.55);border-radius:6px;background:#202024;color:#f2f0ec;font-size:12px;box-sizing:border-box}
     .ss-overlay{position:fixed;z-index:2147483646;pointer-events:none;border:2px dashed rgba(216,209,199,.85);background:rgba(216,209,199,.12);border-radius:6px;transition:.08s}
     .ss-overlay.locked{border:2px solid rgba(120,120,125,.95);background:rgba(120,120,125,.12);box-shadow:0 0 0 2px rgba(216,209,199,.35),0 6px 14px rgba(0,0,0,.12)}
   `;
@@ -136,14 +147,41 @@
     const random = document.createElement('input');
     random.type = 'checkbox';
     randomOption.append(random, document.createTextNode(t('random')));
+    randomOption.classList.add('ss-random-option');
+    const settings = document.createElement('div');
+    settings.className = 'ss-settings';
+    const batchSize = document.createElement('input');
+    batchSize.className = 'ss-batch';
+    batchSize.type = 'number';
+    batchSize.min = '1';
+    batchSize.max = '100';
+    batchSize.step = '1';
+    batchSize.value = '10';
+    batchSize.title = 'Количество треков за один пакет';
+    const batchOption = document.createElement('label');
+    batchOption.className = 'ss-option ss-batch-option';
+    batchOption.append(document.createTextNode(t('batchLabel')), batchSize);
+    settings.append(randomOption, batchOption);
     const stop = mk(t('stop'));
     const close = mk(t('close'));
     const label = document.createElement('span');
     label.className = 'ss-label';
     label.textContent = t('ready');
-    box.append(down, up, pick, vkAdd, vkRemove, randomOption, stop, close, label);
+    const row = (...items) => {
+      const el = document.createElement('div');
+      el.className = 'ss-row';
+      el.append(...items);
+      return el;
+    };
+    box.append(
+      row(up, down, pick),
+      row(vkAdd, vkRemove),
+      settings,
+      row(stop, close),
+      label
+    );
     document.body.appendChild(box);
-    return { box, down, up, pick, vkAdd, vkRemove, random, stop, close, label };
+    return { box, down, up, pick, vkAdd, vkRemove, random, batchSize, stop, close, label };
   })();
 
   const buttons = [panel.down, panel.up, panel.pick, panel.vkAdd, panel.vkRemove, panel.stop, panel.close];
@@ -241,7 +279,81 @@
     };
   })();
 
-  const cfg = { step: 1400, near: 4, growWaitDown: 1200, growWaitUp: 1800, maxIdle: 2, maxMs: 180000 };
+  const cfg = {
+    step: 1400,
+    near: 4,
+    bottomNudge: 1000,
+    bottomPause: 650,
+    growWaitDown: 1200,
+    growWaitUp: 1800,
+    maxIdle: 2,
+    maxMs: 180000
+  };
+
+  const getScrollTop = (el) => (
+    el === document.body || el === document.documentElement || el === document.scrollingElement
+      ? window.scrollY || el.scrollTop
+      : el.scrollTop
+  );
+
+  const setScrollTop = (el, value) => {
+    if (el === document.body || el === document.documentElement || el === document.scrollingElement) {
+      window.scrollTo(0, value);
+    } else {
+      el.scrollTop = value;
+    }
+    // VK's lazy loaders listen to scroll events on the selected container.
+    el.dispatchEvent(new Event('scroll', { bubbles: true }));
+  };
+
+  const getMaxScrollTop = (el) => Math.max(0, el.scrollHeight - el.clientHeight);
+
+  const getTrackNudge = () => {
+    const rows = Array.from(document.querySelectorAll(
+      '[data-sortable-id][draggable="true"], [data-testid="MusicPlaylistTracks_MusicTrackRow"]'
+    ))
+      .map(row => row.getBoundingClientRect().height)
+      .filter(height => height > 20 && height < 240)
+      .sort((a, b) => a - b);
+    const rowHeight = rows.length ? rows[Math.floor(rows.length / 2)] : 64;
+    const trackCount = 8 + Math.floor(Math.random() * 8);
+    return Math.min(cfg.bottomNudge, Math.max(120, rowHeight * trackCount));
+  };
+
+  const dispatchWheel = (el, deltaY) => {
+    if (typeof WheelEvent !== 'function') return;
+    el.dispatchEvent(new WheelEvent('wheel', {
+      bubbles: true,
+      cancelable: true,
+      composed: true,
+      deltaX: 0,
+      deltaY,
+      deltaZ: 0,
+      deltaMode: 0
+    }));
+  };
+
+  const wheelStep = async (el, deltaY) => {
+    dispatchWheel(el, deltaY);
+    doStep(el, deltaY);
+    await raf();
+  };
+
+  async function triggerBottomLoad(el) {
+    const nudge = getTrackNudge();
+    const maxTop = getMaxScrollTop(el);
+    const currentTop = Math.min(getScrollTop(el), maxTop);
+
+    // VK's current "My tracks" loader expects a real wheel-like up/down
+    // sequence. A write to scrollTop while already at max is ignored by it.
+    if (currentTop >= maxTop - cfg.near) {
+      await wheelStep(el, -nudge);
+    }
+
+    await wheelStep(el, nudge * 1.5);
+    setScrollTop(el, getMaxScrollTop(el));
+    await new Promise(resolve => setTimeout(resolve, cfg.bottomPause));
+  }
 
   function waitForGrowth(el, prevH, ms) {
     return new Promise(res => {
@@ -350,12 +462,12 @@
     processedKeys: new Set(),
     targetOrder: [],
     randomOrder: false,
+    batchSize: 10,
     emptyBatches: 0
   };
 
   const vkCfg = {
-    clickDelay: 80,
-    batchSize: 4
+    clickDelay: 80
   };
 
   const VK_HOST_RE = /(^|\.)vk\.(com|ru)$/i;
@@ -447,6 +559,7 @@
     vk.processedKeys = new Set();
     vk.targetOrder = [];
     vk.randomOrder = false;
+    vk.batchSize = 10;
     vk.emptyBatches = 0;
     updateVkButtons();
   }
@@ -474,8 +587,8 @@
 
     const current = collectCurrentTargets(list, mode);
     const batch = vk.randomOrder
-      ? current.sort((a, b) => vk.targetOrder.indexOf(getNodeKey(a)) - vk.targetOrder.indexOf(getNodeKey(b))).slice(0, vkCfg.batchSize)
-      : current.slice(-vkCfg.batchSize);
+      ? current.sort((a, b) => vk.targetOrder.indexOf(getNodeKey(a)) - vk.targetOrder.indexOf(getNodeKey(b))).slice(0, vk.batchSize)
+      : current.slice(-vk.batchSize);
     if (!batch.length) {
       if (++vk.emptyBatches <= 10) {
         vk.timer = setTimeout(() => vkRunBatch(mode), 200);
@@ -502,6 +615,45 @@
     }
 
     vk.timer = setTimeout(() => vkRunBatch(mode), vkCfg.clickDelay);
+  }
+
+  function waitForDownLoad(el, prevH, ms) {
+    return new Promise(resolve => {
+      const start = performance.now();
+      const baseChild = el.childElementCount;
+      const baseLast = el.lastElementChild;
+      let done = false;
+      let to = null;
+      let mo = null;
+      let poll = null;
+      const finish = value => {
+        if (done) return;
+        done = true;
+        if (to) clearTimeout(to);
+        if (poll) clearInterval(poll);
+        if (mo) {
+          try { mo.disconnect(); } catch {}
+        }
+        resolve(value);
+      };
+      const changed = () => el.scrollHeight > prevH ||
+        el.childElementCount !== baseChild ||
+        el.lastElementChild !== baseLast;
+
+      try {
+        mo = new MutationObserver(() => {
+          if (changed()) finish(true);
+        });
+        mo.observe(el, { childList: true, subtree: true });
+      } catch {}
+
+      poll = setInterval(() => {
+        if (changed() || performance.now() - start >= ms) {
+          finish(changed());
+        }
+      }, 150);
+      to = setTimeout(() => finish(false), ms);
+    });
   }
 
   function vkStart(mode) {
@@ -536,7 +688,15 @@
           return;
         }
       }
+
     }
+
+    const batchSize = Number(panel.batchSize.value);
+    if (!Number.isSafeInteger(batchSize) || batchSize < 1 || batchSize > 100) {
+      window.alert(t('batchInvalid'));
+      return;
+    }
+    vk.batchSize = batchSize;
 
     const candidates = collectTargets(list, mode);
     let selected = candidates;
@@ -626,6 +786,7 @@
 
       if ((direction === 'down' && atBottom) || (direction === 'up' && atTop)) {
         const waitMs = direction === 'down' ? cfg.growWaitDown : cfg.growWaitUp;
+        const previousHeight = target.scrollHeight;
 
         if (direction === 'up') {
           for (let i = 0; i < 3; i++) {
@@ -634,15 +795,12 @@
           }
           target.scrollTop = 0;
         } else {
-          for (let i = 0; i < 2; i++) {
-            doStep(target, +200);
-            await raf();
-          }
+          await triggerBottomLoad(target);
         }
 
         const grew = direction === 'up'
           ? await waitForUpLoad(target, waitMs * (1 + idle * 0.5))
-          : await waitForGrowth(target, target.scrollHeight, waitMs * (1 + idle * 0.5));
+          : await waitForDownLoad(target, previousHeight, waitMs * (1 + idle * 0.5));
 
         if (!running || dir !== direction) break;
         if (!grew) {

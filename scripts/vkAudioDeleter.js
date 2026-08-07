@@ -6,8 +6,10 @@
       noMusicAudiosBlock: 'Не найден блок вашей музыки data-type="music_audios". Удаление не запущено.',
       noTracks: 'Треки не найдены. Откройте раздел музыки и прокрутите список до конца (можно СмартСкроллом).',
       noDuplicates: 'Безопасные дубликаты не найдены.',
-      confirm: (count) => `Удалить загруженные треки из вашей музыки? Количество: ${count}.`,
-      confirmDuplicates: (count) => `Удалить безопасные дубликаты? Будет удалено: ${count}.`,
+      confirm: (count) => `ВНИМАНИЕ! Будет удалено ${count} загруженных треков из вашей музыки VK. Треки будут удалены через VK и действие нельзя отменить. Продолжить?`,
+      confirmFinal: (count) => `ВТОРОЕ ПРЕДУПРЕЖДЕНИЕ! Сейчас будут удалены ${count} треков из вашей музыки. Плейлисты и файлы на компьютере не затрагиваются, но восстановить удалённые треки автоматически нельзя. Подтвердить удаление?`,
+      confirmDuplicates: (count) => `ВНИМАНИЕ! Будет удалено ${count} безопасных дубликатов из вашей музыки VK. Для каждого трека сохранится только первое найденное вхождение. Продолжить?`,
+      confirmDuplicatesFinal: (count) => `ВТОРОЕ ПРЕДУПРЕЖДЕНИЕ! Сейчас будут удалены ${count} дубликатов. Это необратимое удаление треков из вашей музыки, отменить его нельзя. Подтвердить удаление?`,
       limitPrompt: (count) => `Сколько треков удалить? Доступно: ${count}. Оставьте пустым, чтобы удалить все.`,
       invalidLimit: 'Введите число больше 0.',
       stopRequested: 'vkAudioDeleter: запрошена остановка текущего запуска',
@@ -21,8 +23,10 @@
       noMusicAudiosBlock: 'Your music block data-type="music_audios" was not found. Deletion was not started.',
       noTracks: 'No tracks found. Open music and scroll to the end (you can use SmartScroll).',
       noDuplicates: 'No safe duplicates found.',
-      confirm: (count) => `Delete the loaded tracks from your music? Count: ${count}.`,
-      confirmDuplicates: (count) => `Delete safe duplicates? Tracks to delete: ${count}.`,
+      confirm: (count) => `WARNING! ${count} loaded tracks will be deleted from your VK music. VK will remove them and this cannot be undone. Continue?`,
+      confirmFinal: (count) => `SECOND WARNING! ${count} tracks are about to be deleted from your music. Playlists and files on your computer are not affected, but the deleted tracks cannot be restored automatically. Confirm deletion?`,
+      confirmDuplicates: (count) => `WARNING! ${count} safe duplicates will be deleted from your VK music. The first occurrence of each track will be kept. Continue?`,
+      confirmDuplicatesFinal: (count) => `SECOND WARNING! ${count} duplicates are about to be deleted. This permanently removes tracks from your music and cannot be undone. Confirm deletion?`,
       limitPrompt: (count) => `How many tracks should be deleted? Available: ${count}. Leave empty to delete all.`,
       invalidLimit: 'Enter a number greater than 0.',
       stopRequested: 'vkAudioDeleter: stop requested for the current run',
@@ -36,8 +40,10 @@
       noMusicAudiosBlock: 'Der Musikblock data-type="music_audios" wurde nicht gefunden. Loschen wurde nicht gestartet.',
       noTracks: 'Keine Tracks gefunden. Offne Musik und scrolle bis zum Ende (SmartScroll kann helfen).',
       noDuplicates: 'Keine sicheren Duplikate gefunden.',
-      confirm: (count) => `Geladene Tracks aus deiner Musik loschen? Anzahl: ${count}.`,
-      confirmDuplicates: (count) => `Sichere Duplikate loschen? Zu loschen: ${count}.`,
+      confirm: (count) => `WARNUNG! ${count} geladene Tracks werden aus deiner VK-Musik gelöscht. VK entfernt sie und dies kann nicht rückgängig gemacht werden. Fortfahren?`,
+      confirmFinal: (count) => `ZWEITE WARNUNG! ${count} Tracks werden jetzt aus deiner Musik gelöscht. Playlists und Dateien auf deinem Computer sind nicht betroffen, aber gelöschte Tracks können nicht automatisch wiederhergestellt werden. Löschen bestätigen?`,
+      confirmDuplicates: (count) => `WARNUNG! ${count} sichere Duplikate werden aus deiner VK-Musik gelöscht. Das erste Vorkommen jedes Tracks bleibt erhalten. Fortfahren?`,
+      confirmDuplicatesFinal: (count) => `ZWEITE WARNUNG! ${count} Duplikate werden jetzt gelöscht. Diese Tracks werden dauerhaft aus deiner Musik entfernt. Löschen bestätigen?`,
       limitPrompt: (count) => `Wie viele Tracks sollen geloscht werden? Verfugbar: ${count}. Leer lassen, um alle zu loschen.`,
       invalidLimit: 'Gib eine Zahl grosser als 0 ein.',
       stopRequested: 'vkAudioDeleter: Stopp fur den aktuellen Lauf angefordert',
@@ -107,6 +113,14 @@
     return { audioId, ownerId, deleteHash };
   }
 
+  function getModernDeleteButton(audioEl) {
+    const row = audioEl?.matches('[data-sortable-id]')
+      ? audioEl
+      : audioEl?.closest('[data-sortable-id]');
+    const button = row?.querySelector('[data-testid="MusicAudio_ToggleOwning"]');
+    return button && button.getAttribute('data-testactive') === 'true' ? button : null;
+  }
+
   function normalizeText(value) {
     return String(value || '')
       .toLowerCase()
@@ -133,14 +147,24 @@
     } catch {}
 
     const title = getText(audioEl, [
+      '[data-testid="MusicTrackRow_Title"]',
       'a[data-testid="audio_row_title"]',
       '._audio_row__title_inner',
       '.audio_row__title_inner'
     ]);
 
+    const durationText = getText(audioEl, [
+      '[data-testid="MusicTrackRow_Duration"]',
+      '.audio_row__duration'
+    ]);
+    const durationParts = durationText.match(/^(?:(\d+):)?(\d{1,2}):(\d{2})$/);
+    const modernDuration = durationParts
+      ? (Number(durationParts[1] || 0) * 60 * 60) + (Number(durationParts[2]) * 60) + Number(durationParts[3])
+      : 0;
     const duration =
       Number(audioInfo && audioInfo[5]) ||
       Number(audioInfo && audioInfo.duration) ||
+      modernDuration ||
       0;
 
     const key = [
@@ -159,6 +183,13 @@
     return new Promise(resolve => {
       if (state.stopRequested) {
         resolve(false);
+        return;
+      }
+
+      const modernDeleteButton = getModernDeleteButton(audioEl);
+      if (modernDeleteButton) {
+        modernDeleteButton.click();
+        setTimeout(() => resolve(true), 120);
         return;
       }
 
@@ -197,10 +228,16 @@
   }
 
   function findMusicAudiosBlock() {
-    return document.querySelector('[data-type="music_audios"]');
+    return document.querySelector('[data-type="music_audios"]') ||
+      document.querySelector('[data-testid="AudioCatalog_BlockMusicAudiosList"]');
   }
 
   function collectAudios() {
+    const modernAudios = Array.from(document.querySelectorAll(
+      '[data-sortable-id][draggable="true"]'
+    )).filter(row => row.querySelector('[data-audio-id]'));
+    if (modernAudios.length) return modernAudios;
+
     const block = findMusicAudiosBlock();
     if (!block) {
       alert(t('noMusicAudiosBlock'));
@@ -286,18 +323,19 @@
         return;
       }
 
-      if (!confirm(t('confirmDuplicates', audios.length))) {
+      if (!confirm(t('confirmDuplicates', audios.length)) ||
+          !confirm(t('confirmDuplicatesFinal', audios.length))) {
         state.running = false;
         return;
       }
     } else {
-      if (!confirm(t('confirm', allAudios.length))) {
+      const limit = pickDeleteLimit(allAudios.length);
+      if (!limit) {
         state.running = false;
         return;
       }
 
-      const limit = pickDeleteLimit(allAudios.length);
-      if (!limit) {
+      if (!confirm(t('confirm', limit)) || !confirm(t('confirmFinal', limit))) {
         state.running = false;
         return;
       }
