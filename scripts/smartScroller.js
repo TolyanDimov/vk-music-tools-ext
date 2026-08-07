@@ -231,7 +231,7 @@
     };
   })();
 
-  const cfg = { step: 1400, near: 4, growWaitDown: 2500, growWaitUp: 3500, maxIdle: 4, maxMs: 180000 };
+  const cfg = { step: 1400, near: 4, growWaitDown: 1200, growWaitUp: 1800, maxIdle: 2, maxMs: 180000 };
 
   function waitForGrowth(el, prevH, ms) {
     return new Promise(res => {
@@ -318,7 +318,6 @@
   }
 
   function doStep(el, d) {
-    el.dispatchEvent(new WheelEvent('wheel', { deltaY: d, bubbles: true, cancelable: true }));
     if (el === document.body || el === document.documentElement || el === document.scrollingElement) {
       window.scrollBy(0, d);
     } else {
@@ -337,13 +336,14 @@
     timer: null,
     total: 0,
     processed: 0,
-    nodes: [],
-    index: -1
+    targetKeys: new Set(),
+    processedKeys: new Set(),
+    emptyBatches: 0
   };
 
   const vkCfg = {
-    clickDelay: 3,
-    batchSize: 20
+    clickDelay: 80,
+    batchSize: 4
   };
 
   const VK_HOST_RE = /(^|\.)vk\.(com|ru)$/i;
@@ -366,6 +366,13 @@
   const getCheck = (el) => el?.matches('.ape_check')
     ? el
     : el?.querySelector('.ape_check');
+
+  const getNodeKey = (el) => {
+    const row = el?.closest('[data-testid="MusicPlaylist_EditModal_MusicTrackRow"], .ape_audio_item_wrap');
+    const audioRow = row?.querySelector('[data-full-id]') || el?.closest('[data-full-id]');
+    const key = audioRow?.getAttribute('data-full-id') || row?.getAttribute('data-audio-id');
+    return key || row || el;
+  };
 
   const isUnchecked = (el) => {
     const check = getCheck(el);
@@ -391,6 +398,12 @@
     });
     return result;
   };
+
+  const collectCurrentTargets = (list, mode) => collectTargets(list, mode)
+    .filter(el => {
+      const key = getNodeKey(el);
+      return vk.targetKeys.has(key) && !vk.processedKeys.has(key);
+    });
 
   const vkLabels = {
     add: t('add'),
@@ -418,8 +431,9 @@
     vk.timer = null;
     vk.total = 0;
     vk.processed = 0;
-    vk.nodes = [];
-    vk.index = -1;
+    vk.targetKeys = new Set();
+    vk.processedKeys = new Set();
+    vk.emptyBatches = 0;
     updateVkButtons();
   }
 
@@ -438,29 +452,38 @@
       return;
     }
 
-    if (vk.index < 0) {
+    const list = findVkList();
+    if (!list) {
       vkFinish();
       return;
     }
 
-    let clicks = 0;
-    while (vk.index >= 0 && clicks < vkCfg.batchSize) {
-      const el = vk.nodes[vk.index];
-      if (el) {
-        if (mode === 'add' && isUnchecked(el)) {
-          getCheck(el).click();
-          vk.processed++;
-          clicks++;
-        } else if (mode === 'remove' && isChecked(el)) {
-          getCheck(el).click();
-          vk.processed++;
-          clicks++;
-        }
+    const current = collectCurrentTargets(list, mode);
+    const batch = current.slice(-vkCfg.batchSize);
+    if (!batch.length) {
+      if (++vk.emptyBatches <= 10) {
+        vk.timer = setTimeout(() => vkRunBatch(mode), 200);
+        return;
       }
-      vk.index -= 1;
+      vkFinish();
+      return;
+    }
+
+    vk.emptyBatches = 0;
+    for (const el of batch) {
+      const key = getNodeKey(el);
+      const check = getCheck(el);
+      if (!check || vk.processedKeys.has(key)) continue;
+      check.click();
+      vk.processedKeys.add(key);
+      vk.processed++;
     }
 
     updateVkButtons();
+    if (vk.processed >= vk.total) {
+      vkFinish();
+      return;
+    }
 
     vk.timer = setTimeout(() => vkRunBatch(mode), vkCfg.clickDelay);
   }
@@ -499,14 +522,16 @@
       }
     }
 
-    vk.nodes = collectTargets(list, mode);
-    if (mode === 'add' && addLimit !== null) {
-      vk.nodes = vk.nodes.slice(0, addLimit);
-    }
-    vk.total = vk.nodes.length;
+    const candidates = collectTargets(list, mode);
+    const selected = mode === 'add' && addLimit !== null
+      ? candidates.slice(-addLimit)
+      : candidates;
+    vk.targetKeys = new Set(selected.map(getNodeKey));
+    vk.processedKeys = new Set();
+    vk.emptyBatches = 0;
+    vk.total = vk.targetKeys.size;
     vk.processed = 0;
     vk.running = mode;
-    vk.index = vk.nodes.length - 1;
     updateVkButtons();
 
     if (!vk.total) {
@@ -690,6 +715,7 @@
     delete window.__smartScrollerApi;
     document.removeEventListener('keydown', escClose, true);
     document.removeEventListener('vk-audio-deleter-progress', handleVkAudioDeleteProgress, false);
+    clearInterval(vkAvailabilityTimer);
     console.log('smartScroller: closed');
   }
 
@@ -727,7 +753,7 @@
   panel.close.onclick = closeAll;
 
   updateVkAvailability();
-  setInterval(updateVkAvailability, 1200);
+  const vkAvailabilityTimer = setInterval(updateVkAvailability, 1200);
 
   window.__smartScrollerApi = {
     open() {
