@@ -24,6 +24,8 @@
       stopped: 'остановлено',
       vkNotOpen: 'VK не открыт',
       vkNeedEdit: 'Откройте редактирование плейлиста',
+      addLimitPrompt: 'Сколько треков добавить? Введите число. Пустое значение — добавить все найденные.',
+      addLimitInvalid: 'Введите положительное целое число или оставьте поле пустым.',
       addProgress: (p, t) => `Добавление: ${p}/${t}`,
       removeProgress: (p, t) => `Снятие: ${p}/${t}`,
       deleteStarting: (t) => `Удаление: 0/${t}`,
@@ -49,6 +51,8 @@
       stopped: 'stopped',
       vkNotOpen: 'VK not open',
       vkNeedEdit: 'Open playlist edit mode',
+      addLimitPrompt: 'How many tracks should be added? Enter a number. Leave empty to add all found tracks.',
+      addLimitInvalid: 'Enter a positive whole number or leave the field empty.',
       addProgress: (p, t) => `Adding: ${p}/${t}`,
       removeProgress: (p, t) => `Removing: ${p}/${t}`,
       deleteStarting: (t) => `Deleting: 0/${t}`,
@@ -74,6 +78,8 @@
       stopped: 'gestoppt',
       vkNotOpen: 'VK nicht geöffnet',
       vkNeedEdit: 'Playlist-Bearbeitung öffnen',
+      addLimitPrompt: 'Wie viele Titel sollen hinzugefügt werden? Zahl eingeben. Leer lassen, um alle gefundenen Titel hinzuzufügen.',
+      addLimitInvalid: 'Gib eine positive ganze Zahl ein oder lasse das Feld leer.',
       addProgress: (p, t) => `Hinzufügen: ${p}/${t}`,
       removeProgress: (p, t) => `Entfernen: ${p}/${t}`,
       deleteStarting: (t) => `Löschen: 0/${t}`,
@@ -475,7 +481,28 @@
       vkStop();
     }
 
+    let addLimit = null;
+    if (mode === 'add') {
+      const answer = window.prompt(t('addLimitPrompt'), '');
+      if (answer === null) {
+        panel.label.textContent = t('ready');
+        return;
+      }
+
+      const value = answer.trim();
+      if (value) {
+        addLimit = Number(value);
+        if (!Number.isSafeInteger(addLimit) || addLimit <= 0) {
+          window.alert(t('addLimitInvalid'));
+          return;
+        }
+      }
+    }
+
     vk.nodes = collectTargets(list, mode);
+    if (mode === 'add' && addLimit !== null) {
+      vk.nodes = vk.nodes.slice(0, addLimit);
+    }
     vk.total = vk.nodes.length;
     vk.processed = 0;
     vk.running = mode;
