@@ -9,7 +9,8 @@ Built from older [snippets](https://github.com/TolyanDimov/Snippets) that were u
 ## Features
 
 - **SmartScroll:** auto scroll up/down, container selection, floating control panel.
-- **VK Music:** mass add/remove tracks in playlist edit mode, delete loaded tracks and safe duplicates from your music.
+- **VK Music:** mass add/remove tracks in playlist edit mode, add a selected number of tracks from the bottom of the loaded list, random track selection, delete loaded tracks and safe duplicates from your music.
+- **VK Photo Albums:** select all photos with VK's native button for later moving them through the **More** menu.
 - **Export:** save track list to TXT (`Artist - Title`).
 
 ## Localization support
@@ -33,8 +34,19 @@ The extension supports three languages: Russian, English, and German.
 
 1. Open VK Music and enter playlist edit mode.
 2. **First scroll to the end** (you can use SmartScroll).
-3. Use the floating panel: **Add** tracks, **Remove** tracks, **Stop** (cancel all operations).
-4. Progress is shown in the floating panel status line.
+3. Click **Add** and enter the number of tracks. Leave the field empty to add all found tracks.
+4. Enable **Random order** before starting to select tracks randomly.
+5. With random mode disabled, adding starts from the bottom of the available list.
+6. Use **Remove** to uncheck tracks and **Stop** to cancel an operation.
+7. Progress is shown in the floating panel status line.
+
+### Moving photos between VK albums
+
+1. Open the required VK album and enable photo selection mode.
+2. Click **Select all photos** in the extension popup.
+3. In VK, open **More** and choose moving the photos to another album.
+
+The extension presses VK's native **Select all** button. Availability of moving photos depends on account permissions and the current VK interface.
 
 ### Export
 
@@ -60,6 +72,7 @@ The extension supports three languages: Russian, English, and German.
 ## Notes
 
 - Playlist add/remove buttons are available only in playlist edit mode.
+- VK tools support both `vk.com` and `vk.ru`.
 - Delete works with tracks loaded on the page and asks for confirmation before starting.
 - Do not close the tab while operations are running.
 - Large playlists may cause the browser to slow down.

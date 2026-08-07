@@ -9,7 +9,8 @@ Erstellt aus älteren [Snippets](https://github.com/TolyanDimov/Snippets), die �
 ## Funktionen
 
 - **SmartScroll:** Auto-Scroll hoch/runter, Container-Auswahl, schwebendes Bedienfeld.
-- **VK Musik:** Massen-Hinzufügen/Entfernen im Playlist-Bearbeitungsmodus, geladene Tracks und sichere Duplikate aus der Musik löschen.
+- **VK Musik:** Massen-Hinzufügen/Entfernen im Playlist-Bearbeitungsmodus, eine festgelegte Anzahl von Tracks vom Ende der geladenen Liste hinzufügen, zufällige Trackauswahl sowie geladene Tracks und sichere Duplikate aus der Musik löschen.
+- **VK-Fotoalben:** alle Fotos mit der nativen VK-Schaltfläche auswählen, um sie anschließend über das Menü **Mehr** zu verschieben.
 - **Export:** Trackliste als TXT (`Künstler - Titel`).
 
 ## Lokalisierungsunterstützung
@@ -33,8 +34,19 @@ Die Erweiterung unterstützt drei Sprachen: Russisch, Englisch und Deutsch.
 
 1. VK Musik öffnen und Playlist-Bearbeitung starten.
 2. **Zuerst bis zum Ende scrollen** (SmartScroll verwenden).
-3. Schwebendes Panel: **Hinzufügen**, **Entfernen**, **Stopp** (alle Vorgänge beenden).
-4. Fortschritt wird in der Statuszeile des Panels angezeigt.
+3. **Hinzufügen** anklicken und die Anzahl der Tracks eingeben. Leer lassen, um alle gefundenen Tracks hinzuzufügen.
+4. Vor dem Start **Zufällige Reihenfolge** aktivieren, um Tracks zufällig auszuwählen.
+5. Ohne Zufallsmodus beginnt das Hinzufügen am Ende der verfügbaren Liste.
+6. Mit **Entfernen** Häkchen entfernen und mit **Stopp** den Vorgang abbrechen.
+7. Fortschritt wird in der Statuszeile des Panels angezeigt.
+
+### Fotos zwischen VK-Alben verschieben
+
+1. Das gewünschte VK-Album öffnen und den Auswahlmodus aktivieren.
+2. Im Erweiterungs-Popup **Alle Fotos auswählen** anklicken.
+3. In VK **Mehr** öffnen und das Verschieben in ein anderes Album auswählen.
+
+Die Erweiterung drückt die native VK-Schaltfläche **Alle auswählen**. Die Verfügbarkeit des Verschiebens hängt von den Kontoberechtigungen und der aktuellen VK-Oberfläche ab.
 
 ### Export
 
@@ -60,6 +72,7 @@ Die Erweiterung unterstützt drei Sprachen: Russisch, Englisch und Deutsch.
 ## Hinweise
 
 - Playlist-Hinzufügen/Entfernen funktioniert nur in der Playlist-Bearbeitung.
+- Die VK-Werkzeuge unterstützen `vk.com` und `vk.ru`.
 - Löschen arbeitet mit den auf der Seite geladenen Tracks und fragt vor dem Start nach Bestätigung.
 - Tab während der Ausführung nicht schließen.
 - Große Playlists können den Browser verlangsamen.
@@ -71,9 +84,5 @@ Die Erweiterung unterstützt drei Sprachen: Russisch, Englisch und Deutsch.
 ## Autor
 
 Anatoly Dimov — https://github.com/TolyanDimov
-
-**Lokalisierungsunterstützung**
-
-**Die Erweiterung**unterstützt**drei**Sprachen**: Russisch**, Englisch und Deutsch.
 
 
