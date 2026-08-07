@@ -12,6 +12,7 @@
       up: 'Вверх',
       pick: 'Выбор',
       add: 'Добавить',
+      random: 'Случайный порядок',
       remove: 'Снять',
       stop: 'Стоп',
       close: 'Закрыть',
@@ -39,6 +40,7 @@
       up: 'Up',
       pick: 'Pick',
       add: 'Add',
+      random: 'Random order',
       remove: 'Remove',
       stop: 'Stop',
       close: 'Close',
@@ -66,6 +68,7 @@
       up: 'Hoch',
       pick: 'Wählen',
       add: 'Hinzufügen',
+      random: 'Zufällige Reihenfolge',
       remove: 'Entfernen',
       stop: 'Stopp',
       close: 'Schließen',
@@ -104,6 +107,8 @@
     .ss-btn.active{background:#bdb6ad;color:#151414;box-shadow:0 0 0 1px rgba(216,209,199,.45),0 8px 16px rgba(0,0,0,.25)}
     .ss-btn.disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
     .ss-label{opacity:.85;flex:1 1 100%;order:99;text-align:center;padding:2px 4px 0;font-size:12px;min-height:14px}
+    .ss-option{display:flex;align-items:center;gap:5px;padding:4px 6px;white-space:nowrap;font-size:12px;cursor:pointer;user-select:none}
+    .ss-option input{margin:0;accent-color:#bdb6ad}
     .ss-overlay{position:fixed;z-index:2147483646;pointer-events:none;border:2px dashed rgba(216,209,199,.85);background:rgba(216,209,199,.12);border-radius:6px;transition:.08s}
     .ss-overlay.locked{border:2px solid rgba(120,120,125,.95);background:rgba(120,120,125,.12);box-shadow:0 0 0 2px rgba(216,209,199,.35),0 6px 14px rgba(0,0,0,.12)}
   `;
@@ -126,14 +131,19 @@
     const pick = mk(t('pick'));
     const vkAdd = mk(t('add'));
     const vkRemove = mk(t('remove'));
+    const randomOption = document.createElement('label');
+    randomOption.className = 'ss-option';
+    const random = document.createElement('input');
+    random.type = 'checkbox';
+    randomOption.append(random, document.createTextNode(t('random')));
     const stop = mk(t('stop'));
     const close = mk(t('close'));
     const label = document.createElement('span');
     label.className = 'ss-label';
     label.textContent = t('ready');
-    box.append(down, up, pick, vkAdd, vkRemove, stop, close, label);
+    box.append(down, up, pick, vkAdd, vkRemove, randomOption, stop, close, label);
     document.body.appendChild(box);
-    return { box, down, up, pick, vkAdd, vkRemove, stop, close, label };
+    return { box, down, up, pick, vkAdd, vkRemove, random, stop, close, label };
   })();
 
   const buttons = [panel.down, panel.up, panel.pick, panel.vkAdd, panel.vkRemove, panel.stop, panel.close];
@@ -338,6 +348,8 @@
     processed: 0,
     targetKeys: new Set(),
     processedKeys: new Set(),
+    targetOrder: [],
+    randomOrder: false,
     emptyBatches: 0
   };
 
@@ -433,6 +445,8 @@
     vk.processed = 0;
     vk.targetKeys = new Set();
     vk.processedKeys = new Set();
+    vk.targetOrder = [];
+    vk.randomOrder = false;
     vk.emptyBatches = 0;
     updateVkButtons();
   }
@@ -459,7 +473,9 @@
     }
 
     const current = collectCurrentTargets(list, mode);
-    const batch = current.slice(-vkCfg.batchSize);
+    const batch = vk.randomOrder
+      ? current.sort((a, b) => vk.targetOrder.indexOf(getNodeKey(a)) - vk.targetOrder.indexOf(getNodeKey(b))).slice(0, vkCfg.batchSize)
+      : current.slice(-vkCfg.batchSize);
     if (!batch.length) {
       if (++vk.emptyBatches <= 10) {
         vk.timer = setTimeout(() => vkRunBatch(mode), 200);
@@ -523,11 +539,21 @@
     }
 
     const candidates = collectTargets(list, mode);
-    const selected = mode === 'add' && addLimit !== null
-      ? candidates.slice(-addLimit)
-      : candidates;
+    let selected = candidates;
+    if (mode === 'add' && panel.random.checked) {
+      selected = [...candidates];
+      for (let i = selected.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [selected[i], selected[j]] = [selected[j], selected[i]];
+      }
+      if (addLimit !== null) selected = selected.slice(0, addLimit);
+    } else if (mode === 'add' && addLimit !== null) {
+      selected = candidates.slice(-addLimit);
+    }
     vk.targetKeys = new Set(selected.map(getNodeKey));
     vk.processedKeys = new Set();
+    vk.targetOrder = selected.map(getNodeKey);
+    vk.randomOrder = mode === 'add' && panel.random.checked;
     vk.emptyBatches = 0;
     vk.total = vk.targetKeys.size;
     vk.processed = 0;
