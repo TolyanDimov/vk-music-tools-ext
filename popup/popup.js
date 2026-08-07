@@ -215,6 +215,9 @@ async function init() {
           await callSmartScroller('open');
           await runAudioDeleter('duplicates');
           setMessage(i18n('msgVkDeleteDuplicatesStarted', 'Удаление дубликатов запущено.'));
+        } else if (action === 'vk-photos-select-all') {
+          await runFile('scripts/vkPhotoAlbumSelector.js');
+          setMessage(i18n('msgVkPhotosSelectAll', 'Все фото выбраны. Откройте «Ещё» и выберите перенос.'));
         } else if (action === 'vk-add') {
           await callVkOps('vkAdd');
           setMessage(i18n('msgVkAddStarted', 'Массовое добавление запущено.'));

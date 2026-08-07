@@ -23,6 +23,9 @@
   "groupVk": {
     "message": "VK Музыка"
   },
+  "groupVkPhotos": {
+    "message": "Фотоальбомы VK"
+  },
   "groupGeneral": {
     "message": "Общий контроль"
   },
@@ -55,6 +58,9 @@
   },
   "btnVkDeleteDuplicates": {
     "message": "Удалить дубликаты"
+  },
+  "btnVkPhotosSelectAll": {
+    "message": "Выбрать все фото"
   },
   "btnStop": {
     "message": "Стоп"
@@ -94,6 +100,9 @@
   },
   "msgVkDeleteDuplicatesStarted": {
     "message": "Удаление дубликатов запущено."
+  },
+  "msgVkPhotosSelectAll": {
+    "message": "Все фото выбраны. Откройте «Ещё» и выберите перенос."
   },
   "msgStopRequested": {
     "message": "Остановка запрошена."

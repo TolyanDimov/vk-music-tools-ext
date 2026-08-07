@@ -23,6 +23,9 @@
   "groupVk": {
     "message": "VK Music"
   },
+  "groupVkPhotos": {
+    "message": "VK Photo albums"
+  },
   "groupGeneral": {
     "message": "General control"
   },
@@ -55,6 +58,9 @@
   },
   "btnVkDeleteDuplicates": {
     "message": "Delete duplicates"
+  },
+  "btnVkPhotosSelectAll": {
+    "message": "Select all photos"
   },
   "btnStop": {
     "message": "Stop"
@@ -94,6 +100,9 @@
   },
   "msgVkDeleteDuplicatesStarted": {
     "message": "Duplicate deletion started."
+  },
+  "msgVkPhotosSelectAll": {
+    "message": "All photos selected. Open More and choose Move."
   },
   "msgStopRequested": {
     "message": "Stop requested."

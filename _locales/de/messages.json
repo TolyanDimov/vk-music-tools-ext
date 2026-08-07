@@ -23,6 +23,9 @@
   "groupVk": {
     "message": "VK Musik"
   },
+  "groupVkPhotos": {
+    "message": "VK-Fotoalben"
+  },
   "groupGeneral": {
     "message": "Allgemeine Steuerung"
   },
@@ -55,6 +58,9 @@
   },
   "btnVkDeleteDuplicates": {
     "message": "Duplikate löschen"
+  },
+  "btnVkPhotosSelectAll": {
+    "message": "Alle Fotos auswählen"
   },
   "btnStop": {
     "message": "Stopp"
@@ -94,6 +100,9 @@
   },
   "msgVkDeleteDuplicatesStarted": {
     "message": "Duplikat-Löschung gestartet."
+  },
+  "msgVkPhotosSelectAll": {
+    "message": "Alle Fotos ausgewählt. Öffnen Sie Mehr und wählen Sie Verschieben."
   },
   "msgStopRequested": {
     "message": "Stopp angefordert."
