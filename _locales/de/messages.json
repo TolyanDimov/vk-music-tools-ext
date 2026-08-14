@@ -47,11 +47,14 @@
   "btnVkAdd": {
     "message": "Massiv hinzufügen"
   },
+  "btnVkImport": {
+    "message": "Aus TXT hinzufügen"
+  },
   "btnVkRemove": {
     "message": "Massiv entfernen"
   },
   "btnVkExport": {
-    "message": "Export nach TXT"
+    "message": "TXT exportieren"
   },
   "btnVkDelete": {
     "message": "Musik löschen"
@@ -91,6 +94,15 @@
   },
   "msgVkAddStarted": {
     "message": "Massen-Hinzufügen gestartet."
+  },
+  "msgVkImportStarted": {
+    "message": "Hinzufügen von Titeln aus TXT gestartet."
+  },
+  "msgVkImportEmpty": {
+    "message": "Die TXT-Datei enthält keine Titel."
+  },
+  "msgVkImportReadError": {
+    "message": "Die TXT-Datei konnte nicht gelesen werden."
   },
   "msgVkRemoveStarted": {
     "message": "Massen-Entfernen gestartet."

@@ -12,6 +12,11 @@
       up: 'Вверх',
       pick: 'Контейнер',
       add: 'Добавить',
+      import: 'Из файла',
+      export: 'Экспорт TXT',
+      importReadError: 'Не удалось прочитать TXT-файл',
+      exportNoTracks: 'Треки для экспорта не найдены',
+      smoothLabel: 'Плавность прокрутки',
       random: 'Случайный порядок',
       batchLabel: 'За раз:',
       batchInvalid: 'Укажите размер пакета от 1 до 100.',
@@ -27,6 +32,8 @@
       stopped: 'остановлено',
       vkNotOpen: 'VK не открыт',
       vkNeedEdit: 'Откройте редактирование плейлиста',
+      importEmpty: 'Список треков пуст',
+      importNoMatches: 'Совпадения с треками на странице не найдены',
       addLimitPrompt: 'Сколько треков добавить? Введите число. Пустое значение — добавить все найденные.',
       addLimitInvalid: 'Введите положительное целое число или оставьте поле пустым.',
       addProgress: (p, t) => `Добавление: ${p}/${t}`,
@@ -42,6 +49,11 @@
       up: 'Up',
       pick: 'Container',
       add: 'Add',
+      import: 'From file',
+      export: 'Export TXT',
+      importReadError: 'Could not read the TXT file',
+      exportNoTracks: 'No tracks found to export',
+      smoothLabel: 'Smooth scrolling',
       random: 'Random order',
       batchLabel: 'Per batch:',
       batchInvalid: 'Enter a batch size from 1 to 100.',
@@ -57,6 +69,8 @@
       stopped: 'stopped',
       vkNotOpen: 'VK not open',
       vkNeedEdit: 'Open playlist edit mode',
+      importEmpty: 'The track list is empty',
+      importNoMatches: 'No tracks from the file were found on the page',
       addLimitPrompt: 'How many tracks should be added? Enter a number. Leave empty to add all found tracks.',
       addLimitInvalid: 'Enter a positive whole number or leave the field empty.',
       addProgress: (p, t) => `Adding: ${p}/${t}`,
@@ -72,6 +86,11 @@
       up: 'Hoch',
       pick: 'Container',
       add: 'Hinzufügen',
+      import: 'Aus Datei',
+      export: 'TXT exportieren',
+      importReadError: 'TXT-Datei konnte nicht gelesen werden',
+      exportNoTracks: 'Keine Titel zum Exportieren gefunden',
+      smoothLabel: 'Sanftes Scrollen',
       random: 'Zufällige Reihenfolge',
       batchLabel: 'Pro Paket:',
       batchInvalid: 'Gib eine Paketgröße von 1 bis 100 ein.',
@@ -87,6 +106,8 @@
       stopped: 'gestoppt',
       vkNotOpen: 'VK nicht geöffnet',
       vkNeedEdit: 'Playlist-Bearbeitung öffnen',
+      importEmpty: 'Die Titelliste ist leer',
+      importNoMatches: 'Keine Titel aus der Datei auf der Seite gefunden',
       addLimitPrompt: 'Wie viele Titel sollen hinzugefügt werden? Zahl eingeben. Leer lassen, um alle gefundenen Titel hinzuzufügen.',
       addLimitInvalid: 'Gib eine positive ganze Zahl ein oder lasse das Feld leer.',
       addProgress: (p, t) => `Hinzufügen: ${p}/${t}`,
@@ -113,10 +134,12 @@
     .ss-btn:hover{border-color:rgba(216,209,199,.55);box-shadow:0 6px 14px rgba(0,0,0,.3),0 0 8px rgba(216,209,199,.25)}
     .ss-btn.active{background:#bdb6ad;color:#151414;box-shadow:0 0 0 1px rgba(216,209,199,.45),0 8px 16px rgba(0,0,0,.25)}
     .ss-btn.disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+    .ss-btn.file-action{min-width:0}
     .ss-label{opacity:.8;border-top:1px solid rgba(120,120,125,.28);padding:7px 4px 0;text-align:center;font-size:11px;min-height:13px}
     .ss-settings{display:flex;align-items:stretch;justify-content:center;border-top:1px solid rgba(120,120,125,.28);border-bottom:1px solid rgba(120,120,125,.28);padding:5px 0;gap:0}
     .ss-option{display:flex;align-items:center;justify-content:center;gap:5px;padding:2px 10px;white-space:nowrap;font-size:12px;cursor:pointer;user-select:none}
     .ss-random-option{flex:1 1 auto}
+    .ss-smooth-option{border-right:1px solid rgba(120,120,125,.4);color:rgba(242,240,236,.86)}
     .ss-batch-option{border-left:1px solid rgba(120,120,125,.4);color:rgba(242,240,236,.86)}
     .ss-option input{margin:0;accent-color:#bdb6ad}
     .ss-batch{width:52px;margin-left:2px;padding:4px 5px;border:1px solid rgba(120,120,125,.55);border-radius:6px;background:#202024;color:#f2f0ec;font-size:12px;box-sizing:border-box}
@@ -141,7 +164,19 @@
     const up = mk(t('up'));
     const pick = mk(t('pick'));
     const vkAdd = mk(t('add'));
+    const vkImport = mk(t('import'), 'file-action');
     const vkRemove = mk(t('remove'));
+    const vkExport = mk(t('export'), 'file-action');
+    const trackFile = document.createElement('input');
+    trackFile.type = 'file';
+    trackFile.accept = '.txt,text/plain';
+    trackFile.style.display = 'none';
+    const smoothScroll = document.createElement('input');
+    smoothScroll.type = 'checkbox';
+    smoothScroll.checked = true;
+    const smoothOption = document.createElement('label');
+    smoothOption.className = 'ss-option ss-smooth-option';
+    smoothOption.append(smoothScroll, document.createTextNode(t('smoothLabel')));
     const randomOption = document.createElement('label');
     randomOption.className = 'ss-option';
     const random = document.createElement('input');
@@ -161,7 +196,7 @@
     const batchOption = document.createElement('label');
     batchOption.className = 'ss-option ss-batch-option';
     batchOption.append(document.createTextNode(t('batchLabel')), batchSize);
-    settings.append(randomOption, batchOption);
+    settings.append(smoothOption, randomOption, batchOption);
     const stop = mk(t('stop'));
     const close = mk(t('close'));
     const label = document.createElement('span');
@@ -175,16 +210,17 @@
     };
     box.append(
       row(up, down, pick),
-      row(vkAdd, vkRemove),
+      row(vkAdd, vkImport, vkRemove),
       settings,
-      row(stop, close),
+      row(stop, close, vkExport),
       label
     );
+    box.appendChild(trackFile);
     document.body.appendChild(box);
-    return { box, down, up, pick, vkAdd, vkRemove, random, batchSize, stop, close, label };
+    return { box, down, up, pick, vkAdd, vkImport, vkRemove, vkExport, trackFile, random, batchSize, smoothScroll, stop, close, label };
   })();
 
-  const buttons = [panel.down, panel.up, panel.pick, panel.vkAdd, panel.vkRemove, panel.stop, panel.close];
+  const buttons = [panel.down, panel.up, panel.pick, panel.vkAdd, panel.vkImport, panel.vkRemove, panel.vkExport, panel.stop, panel.close];
   const setActive = (btn) => {
     buttons.forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
@@ -283,10 +319,23 @@
     step: 1400,
     near: 4,
     bottomNudge: 1000,
-    bottomPause: 650,
-    growWaitDown: 1200,
-    growWaitUp: 1800,
-    maxIdle: 2,
+    bottomPause: 1400,
+    fastBottomPause: 150,
+    growWaitDown: 4200,
+    fastGrowWaitDown: 700,
+    growWaitUp: 2200,
+    scrollSegmentMin: 95,
+    scrollSegmentMax: 185,
+    scrollPauseMin: 28,
+    scrollPauseMax: 68,
+    stepPauseUpMin: 320,
+    stepPauseUpMax: 560,
+    stepPauseDownMin: 110,
+    stepPauseDownMax: 220,
+    bottomRetryPauseMin: 900,
+    bottomRetryPauseMax: 1700,
+    fastBottomRetryPause: 100,
+    maxIdle: 4,
     maxMs: 180000
   };
 
@@ -334,10 +383,52 @@
   };
 
   const wheelStep = async (el, deltaY) => {
+    if (panel.smoothScroll.checked) {
+      await smoothMove(el, deltaY);
+      return;
+    }
     dispatchWheel(el, deltaY);
     doStep(el, deltaY);
     await raf();
   };
+
+  const randomBetween = (min, max) => min + Math.random() * (max - min);
+
+  // Move through short, slightly varied segments. This gives VK regular
+  // scroll events and lets lazy loaders react between movements.
+  async function smoothMove(el, distance) {
+    let remaining = distance;
+    const sign = Math.sign(distance) || 1;
+    const factor = 1;
+
+    while (Math.abs(remaining) > 1) {
+      if (!running && dir) return;
+
+      // React immediately if the user switches the checkbox while moving.
+      if (!panel.smoothScroll.checked) {
+        dispatchWheel(el, remaining);
+        doStep(el, remaining);
+        await raf();
+        return;
+      }
+
+      const amount = Math.min(
+        Math.abs(remaining),
+        randomBetween(cfg.scrollSegmentMin / factor, cfg.scrollSegmentMax / factor)
+      );
+      const delta = sign * amount;
+      dispatchWheel(el, delta);
+      doStep(el, delta);
+      remaining -= delta;
+
+      await new Promise(resolve => setTimeout(
+        resolve,
+        randomBetween(cfg.scrollPauseMin * factor, cfg.scrollPauseMax * factor)
+      ));
+    }
+
+    await raf();
+  }
 
   async function triggerBottomLoad(el) {
     const nudge = getTrackNudge();
@@ -352,7 +443,8 @@
 
     await wheelStep(el, nudge * 1.5);
     setScrollTop(el, getMaxScrollTop(el));
-    await new Promise(resolve => setTimeout(resolve, cfg.bottomPause));
+    const pause = panel.smoothScroll.checked ? cfg.bottomPause : cfg.fastBottomPause;
+    await new Promise(resolve => setTimeout(resolve, pause));
   }
 
   function waitForGrowth(el, prevH, ms) {
@@ -450,6 +542,7 @@
   let running = false;
   let dir = null;
   let target = null;
+  let targetPicked = false;
   let picking = false;
 
   const vk = {
@@ -462,6 +555,7 @@
     processedKeys: new Set(),
     targetOrder: [],
     randomOrder: false,
+    fileOrder: false,
     batchSize: 10,
     emptyBatches: 0
   };
@@ -492,7 +586,13 @@
     : el?.querySelector('.ape_check');
 
   const getNodeKey = (el) => {
-    const row = el?.closest('[data-testid="MusicPlaylist_EditModal_MusicTrackRow"], .ape_audio_item_wrap');
+    const row = el?.closest(
+      '[data-testid="MusicPlaylist_EditModal_MusicTrackRow"],' +
+      ' [data-testid="MusicPlaylistTracks_MusicTrackRow"],' +
+      ' [data-testid="MusicPage_MusicTrackRow"],' +
+      ' [data-testid="MusicTrackRow"],' +
+      ' .ape_audio_item_wrap'
+    );
     const audioRow = row?.querySelector('[data-full-id]') || el?.closest('[data-full-id]');
     const key = audioRow?.getAttribute('data-full-id') || row?.getAttribute('data-audio-id');
     return key || row || el;
@@ -559,6 +659,7 @@
     vk.processedKeys = new Set();
     vk.targetOrder = [];
     vk.randomOrder = false;
+    vk.fileOrder = false;
     vk.batchSize = 10;
     vk.emptyBatches = 0;
     updateVkButtons();
@@ -586,7 +687,12 @@
     }
 
     const current = collectCurrentTargets(list, mode);
-    const batch = vk.randomOrder
+    const batch = vk.fileOrder
+      ? vk.targetOrder
+        .map(key => current.find(el => getNodeKey(el) === key))
+        .filter(Boolean)
+        .slice(0, vk.batchSize)
+      : vk.randomOrder
       ? current.sort((a, b) => vk.targetOrder.indexOf(getNodeKey(a)) - vk.targetOrder.indexOf(getNodeKey(b))).slice(0, vk.batchSize)
       : current.slice(-vk.batchSize);
     if (!batch.length) {
@@ -714,6 +820,7 @@
     vk.processedKeys = new Set();
     vk.targetOrder = selected.map(getNodeKey);
     vk.randomOrder = mode === 'add' && panel.random.checked;
+    vk.fileOrder = false;
     vk.emptyBatches = 0;
     vk.total = vk.targetKeys.size;
     vk.processed = 0;
@@ -726,6 +833,200 @@
     }
 
     vkRunBatch(mode);
+  }
+
+  const normalizeTrackText = value => (value || '')
+    .replace(/^\uFEFF/, '')
+    .replace(/^\s*\d+\s*[.)]\s*/, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLocaleLowerCase();
+
+  const getTrackParts = row => {
+    const titleEl = row.querySelector('[data-testid="MusicTrackRow_Title"]');
+    const authorsAnchor = row.querySelector('[data-testid="MusicTrackRow_Authors"]');
+    if (titleEl && authorsAnchor) {
+      const artistContainer = authorsAnchor.closest('.vkitAudioRowInfo__text--Rrhr2') || authorsAnchor;
+      const artist = artistContainer.textContent.trim().replace(/\s+/g, ' ');
+      const title = titleEl.textContent.trim().replace(/\s+/g, ' ');
+      return artist && title ? { artist, title } : null;
+    }
+
+    const artistEl = row.querySelector('.audio_row__performers');
+    const titleElLegacy = row.querySelector(
+      'a[data-testid="audio_row_title"], ._audio_row__title_inner, .audio_row__title_inner'
+    );
+    if (!artistEl || !titleElLegacy) return null;
+    return {
+      artist: artistEl.textContent.trim(),
+      title: titleElLegacy.textContent.trim()
+    };
+  };
+
+  const getTrackText = row => {
+    const parts = getTrackParts(row);
+    return parts ? `${parts.artist} - ${parts.title}` : '';
+  };
+
+  const splitImportedTrack = line => {
+    const value = line.replace(/^\s*\d+\s*[.)]\s*/, '').trim();
+    const separator = value.lastIndexOf(' - ');
+    if (separator < 1) return { full: value, artist: '', title: '' };
+    return {
+      full: value,
+      artist: value.slice(0, separator).trim(),
+      title: value.slice(separator + 3).trim()
+    };
+  };
+
+  const trackMatches = (line, row) => {
+    const parts = getTrackParts(row);
+    if (!parts) return false;
+
+    const target = splitImportedTrack(line);
+    const rowFull = normalizeTrackText(`${parts.artist} - ${parts.title}`);
+    if (rowFull === normalizeTrackText(target.full)) return true;
+    if (!target.artist || !target.title) return false;
+
+    const rowArtist = normalizeTrackText(parts.artist);
+    const rowTitle = normalizeTrackText(parts.title);
+    const targetArtists = normalizeTrackText(target.artist)
+      .split(/\s*,\s*|\s+&\s+|\s+(?:feat\.?|ft\.?)\s+/i)
+      .map(value => value.trim())
+      .filter(Boolean);
+    const targetTitle = normalizeTrackText(target.title);
+    const artistMatches = targetArtists.some(targetArtist =>
+      rowArtist.includes(targetArtist) || targetArtist.includes(rowArtist)
+    );
+    return artistMatches &&
+      (rowTitle.includes(targetTitle) || targetTitle.includes(rowTitle));
+  };
+
+  function vkStartFromFile(lines) {
+    if (!VK_HOST_RE.test(location.host)) {
+      panel.label.textContent = t('vkNotOpen');
+      return;
+    }
+
+    const list = findVkList();
+    if (!list) {
+      panel.label.textContent = t('vkNeedEdit');
+      return;
+    }
+
+    lines = Array.isArray(lines) ? lines : [];
+    if (!lines.length) {
+      panel.label.textContent = t('importEmpty');
+      return;
+    }
+
+    if (vk.running) vkStop();
+
+    const batchSize = Number(panel.batchSize.value);
+    if (!Number.isSafeInteger(batchSize) || batchSize < 1 || batchSize > 100) {
+      window.alert(t('batchInvalid'));
+      return;
+    }
+
+    const rows = Array.from(list.querySelectorAll(
+      '[data-testid="MusicPlaylist_EditModal_MusicTrackRow"],' +
+      ' [data-testid="MusicPlaylistTracks_MusicTrackRow"],' +
+      ' [data-testid="MusicPage_MusicTrackRow"],' +
+      ' [data-testid="MusicTrackRow"],' +
+      ' .ape_audio_item_wrap'
+    ));
+    const available = [];
+    rows.forEach(row => {
+      const check = getCheck(row);
+      if (!getTrackText(row) || !check || !isUnchecked(check)) return;
+      available.push({ row, check });
+    });
+
+    const selected = [];
+    const missing = [];
+    [...lines].reverse().forEach(line => {
+      const index = available.findIndex(item => trackMatches(line, item.row));
+      if (index < 0) {
+        missing.push(line);
+        return;
+      }
+      selected.push(available[index].check);
+      available.splice(index, 1);
+    });
+
+    vk.targetKeys = new Set(selected.map(getNodeKey));
+    vk.processedKeys = new Set();
+    vk.targetOrder = selected.map(getNodeKey);
+    vk.randomOrder = false;
+    vk.fileOrder = true;
+    vk.emptyBatches = 0;
+    vk.total = vk.targetKeys.size;
+    vk.processed = 0;
+    vk.batchSize = batchSize;
+    vk.running = 'add';
+    updateVkButtons();
+
+    if (missing.length) console.warn('smartScroller: tracks not found:', missing);
+    if (!vk.total) {
+      panel.label.textContent = t('importNoMatches');
+      vkFinish();
+      return;
+    }
+
+    vkRunBatch('add');
+  }
+
+  function exportPlaylistFromPanel() {
+    const rowSelector =
+      '[data-testid="MusicPlaylistTracks_MusicTrackRow"],' +
+      ' [data-testid="MusicPlaylist_EditModal_MusicTrackRow"],' +
+      ' [data-testid="MusicPage_MusicTrackRow"],' +
+      ' [data-testid="MusicTrackRow"],' +
+      ' .audio_row';
+    const scopedRows = target && typeof target.querySelectorAll === 'function'
+      ? Array.from(target.querySelectorAll(rowSelector))
+      : [];
+    const rows = targetPicked
+      ? scopedRows
+      : Array.from(document.querySelectorAll(rowSelector));
+    const lines = [];
+    const exported = new Set();
+
+    rows.forEach(row => {
+      const titleEl = row.querySelector(
+        '[data-testid="MusicTrackRow_Title"], a[data-testid="audio_row_title"], ._audio_row__title_inner, .audio_row__title_inner'
+      );
+      const authorEls = Array.from(row.querySelectorAll('[data-testid="MusicTrackRow_Authors"]'));
+      const legacyAuthor = row.querySelector('.audio_row__performers');
+      const authors = authorEls.length
+        ? authorEls.map(el => el.textContent.trim().replace(/\s+/g, ' '))
+        : legacyAuthor ? [legacyAuthor.textContent.trim().replace(/\s+/g, ' ')] : [];
+      const artist = authors.filter(Boolean).filter((value, index, values) => values.indexOf(value) === index).join(', ');
+      const title = titleEl?.textContent.trim().replace(/\s+/g, ' ');
+      const line = artist && title ? `${artist} - ${title}` : '';
+      const key = normalizeTrackText(line);
+      if (line && !exported.has(key)) {
+        exported.add(key);
+        lines.push(line);
+      }
+    });
+
+    if (!lines.length) {
+      panel.label.textContent = t('exportNoTracks');
+      return;
+    }
+
+    const blob = new Blob([lines.join('\r\n')], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'vk_playlist.txt';
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    panel.label.textContent = `${t('export')}: ${lines.length}`;
   }
 
   function updateVkAvailability() {
@@ -778,20 +1079,35 @@
 
     while (running && dir === direction) {
       const delta = direction === 'down' ? cfg.step : -cfg.step;
-      doStep(target, delta);
-      await raf();
+      if (panel.smoothScroll.checked) {
+        await smoothMove(target, delta);
+      } else {
+        dispatchWheel(target, delta);
+        doStep(target, delta);
+        await raf();
+      }
+      if (!running || dir !== direction) break;
+      if (panel.smoothScroll.checked) {
+        await new Promise(resolve => setTimeout(
+          resolve,
+          direction === 'up'
+            ? randomBetween(cfg.stepPauseUpMin, cfg.stepPauseUpMax)
+            : randomBetween(cfg.stepPauseDownMin, cfg.stepPauseDownMax)
+        ));
+      }
 
       const atBottom = target.clientHeight + target.scrollTop >= target.scrollHeight - cfg.near;
       const atTop = target.scrollTop <= cfg.near;
 
       if ((direction === 'down' && atBottom) || (direction === 'up' && atTop)) {
-        const waitMs = direction === 'down' ? cfg.growWaitDown : cfg.growWaitUp;
+        const waitMs = direction === 'down'
+          ? (panel.smoothScroll.checked ? cfg.growWaitDown : cfg.fastGrowWaitDown)
+          : cfg.growWaitUp;
         const previousHeight = target.scrollHeight;
 
         if (direction === 'up') {
           for (let i = 0; i < 3; i++) {
-            doStep(target, -200);
-            await raf();
+            await wheelStep(target, -200);
           }
           target.scrollTop = 0;
         } else {
@@ -804,7 +1120,16 @@
 
         if (!running || dir !== direction) break;
         if (!grew) {
-          if (++idle >= cfg.maxIdle) break;
+          idle++;
+          if (direction === 'down' && idle < cfg.maxIdle) {
+            await new Promise(resolve => setTimeout(
+              resolve,
+              panel.smoothScroll.checked
+                ? randomBetween(cfg.bottomRetryPauseMin, cfg.bottomRetryPauseMax)
+                : cfg.fastBottomRetryPause
+            ));
+          }
+          if (idle >= cfg.maxIdle) break;
         } else {
           idle = 0;
           if (direction === 'up') target.scrollTop = 0;
@@ -852,6 +1177,7 @@
       const cand = el ? nearestScrollable(el) : null;
       if (cand) {
         target = cand;
+        targetPicked = true;
         overlay.lock(cand);
         stopScroll();
         panel.label.textContent = t('selected');
@@ -932,7 +1258,24 @@
     startPick();
   };
   panel.vkAdd.onclick = () => vkStart('add');
+  panel.vkImport.onclick = () => {
+    panel.trackFile.value = '';
+    panel.trackFile.click();
+  };
   panel.vkRemove.onclick = () => vkStart('remove');
+  panel.vkExport.onclick = exportPlaylistFromPanel;
+  panel.trackFile.addEventListener('change', async () => {
+    const file = panel.trackFile.files && panel.trackFile.files[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const lines = text.split(/\r?\n/).map(line => line.trim()).filter(Boolean);
+      vkStartFromFile(lines);
+    } catch (error) {
+      console.error(error);
+      panel.label.textContent = t('importReadError');
+    }
+  });
   panel.stop.onclick = stopAll;
   panel.close.onclick = closeAll;
 
@@ -961,6 +1304,14 @@
     vkRemove() {
       panel.vkRemove.click();
     },
+    vkImport(lines) {
+      if (Array.isArray(lines)) {
+        vkStartFromFile(lines);
+      } else {
+        panel.vkImport.click();
+      }
+    },
+    vkExport: exportPlaylistFromPanel,
     close: closeAll
   };
 

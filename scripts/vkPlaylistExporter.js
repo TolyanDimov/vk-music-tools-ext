@@ -26,6 +26,15 @@
 
   function collectTracks() {
     const result = [];
+    const seen = new Set();
+    const addTrack = (artist, title) => {
+      const line = `${artist} - ${title}`;
+      const key = line.replace(/\s+/g, ' ').trim().toLocaleLowerCase();
+      if (!seen.has(key)) {
+        seen.add(key);
+        result.push(line);
+      }
+    };
 
     let rows = document.querySelectorAll(
       '[data-testid="MusicPlaylistTracks_MusicTrackRow"],' +
@@ -38,18 +47,19 @@
         const titleEl = row.querySelector('[data-testid="MusicTrackRow_Title"]');
         if (!titleEl) return;
 
-        const authorsAnchor = row.querySelector('[data-testid="MusicTrackRow_Authors"]');
-        if (!authorsAnchor) return;
-
-        const artistContainer =
-          authorsAnchor.closest('.vkitAudioRowInfo__text--Rrhr2') || authorsAnchor;
+        const authorElements = Array.from(row.querySelectorAll('[data-testid="MusicTrackRow_Authors"]'));
+        if (!authorElements.length) return;
 
         const title = titleEl.textContent.trim().replace(/\s+/g, ' ');
-        const artist = artistContainer.textContent.trim().replace(/\s+/g, ' ');
+        const artist = authorElements
+          .map(author => author.textContent.trim().replace(/\s+/g, ' '))
+          .filter(Boolean)
+          .filter((value, index, values) => values.indexOf(value) === index)
+          .join(', ');
 
         if (!artist || !title) return;
 
-        result.push(`${artist} - ${title}`);
+        addTrack(artist, title);
       });
 
       return result;
@@ -72,7 +82,7 @@
       const title = titleEl.textContent.trim().replace(/\s+/g, ' ');
       if (!artist || !title) return;
 
-      result.push(`${artist} - ${title}`);
+      addTrack(artist, title);
     });
 
     return result;

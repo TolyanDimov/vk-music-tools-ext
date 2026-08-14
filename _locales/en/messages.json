@@ -47,11 +47,14 @@
   "btnVkAdd": {
     "message": "Mass add"
   },
+  "btnVkImport": {
+    "message": "Add from TXT"
+  },
   "btnVkRemove": {
     "message": "Mass remove"
   },
   "btnVkExport": {
-    "message": "Export to TXT"
+    "message": "Export TXT"
   },
   "btnVkDelete": {
     "message": "Delete music"
@@ -91,6 +94,15 @@
   },
   "msgVkAddStarted": {
     "message": "Mass add started."
+  },
+  "msgVkImportStarted": {
+    "message": "Adding tracks from TXT started."
+  },
+  "msgVkImportEmpty": {
+    "message": "The TXT file contains no tracks."
+  },
+  "msgVkImportReadError": {
+    "message": "Could not read the TXT file."
   },
   "msgVkRemoveStarted": {
     "message": "Mass remove started."

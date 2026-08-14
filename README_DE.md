@@ -8,10 +8,10 @@ Erstellt aus älteren [Snippets](https://github.com/TolyanDimov/Snippets), die �
 
 ## Funktionen
 
-- **SmartScroll:** Auto-Scroll hoch/runter, Container-Auswahl, schwebendes Bedienfeld und ein kurzer Nachladeimpuls am Listenende.
+- **SmartScroll:** schneller oder sanfter Auto-Scroll hoch/runter, Container-Auswahl, schwebendes Bedienfeld und ein kurzer Nachladeimpuls am Listenende.
 - **VK Musik:** Massen-Hinzufügen/Entfernen im Playlist-Bearbeitungsmodus, Paketgröße von 1–100, zufällige Trackauswahl sowie geladene Tracks und sichere Duplikate aus der Musik löschen.
 - **VK-Fotoalben:** alle Fotos mit der nativen VK-Schaltfläche auswählen, um sie anschließend über das Menü **Mehr** zu verschieben.
-- **Export:** Trackliste als TXT (`Künstler - Titel`).
+- **Export:** Trackliste des ausgewählten Containers als TXT (`Künstler - Titel`), doppelte Zeilen werden entfernt.
 
 ## Lokalisierungsunterstützung
 
@@ -28,7 +28,8 @@ Die Erweiterung unterstützt drei Sprachen: Russisch, Englisch und Deutsch.
 ### SmartScroll
 
 1. **Panel öffnen** im Popup.
-2. Das Panel bietet **Hoch**, **Runter**, **Container**, **Stopp**, **Schließen**.
+2. Das Panel bietet **Hoch**, **Runter**, **Container**, **Stopp**, **Schließen** und **TXT exportieren**.
+3. Mit **Sanftes Scrollen** zwischen sanftem Scrollen mit Pausen und dem schnellen Modus wechseln.
 
 ### VK Musik
 
@@ -39,6 +40,8 @@ Die Erweiterung unterstützt drei Sprachen: Russisch, Englisch und Deutsch.
 5. Bei **Pro Paket** eine Größe von 1 bis 100 eingeben. Ohne Zufallsmodus beginnt das Hinzufügen am Ende der verfügbaren Liste.
 6. Mit **Entfernen** Häkchen entfernen und mit **Stopp** den Vorgang abbrechen.
 7. Fortschritt wird in der Statuszeile des Panels angezeigt.
+
+Um Titel aus einer TXT-Datei hinzuzufügen, im Panel **Aus Datei** oder im Popup **Aus TXT hinzufügen** verwenden. Die Titel werden nach `Künstler - Titel` erkannt und in umgekehrter Dateireihenfolge ausgewählt. Mehrere Künstler sowie ältere Dateien mit nur einem Künstler werden unterstützt.
 
 ### Fotos zwischen VK-Alben verschieben
 
@@ -52,7 +55,9 @@ Die Erweiterung drückt die native VK-Schaltfläche **Alle auswählen**. Die Ver
 
 1. Playlist oder VK Musik öffnen.
 2. **Zuerst bis zum Ende scrollen** (SmartScroll verwenden).
-3. **Export nach TXT** im Popup.
+3. **TXT exportieren** im Popup oder im schwebenden Panel.
+
+Beim Export aus dem schwebenden Panel zuerst mit **Container** die gewünschte Liste auswählen. Nur dieser Container wird exportiert; doppelte `Künstler - Titel`-Zeilen werden entfernt.
 
 ### Musik Löschen
 

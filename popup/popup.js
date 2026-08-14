@@ -1,5 +1,6 @@
 const messageEl = document.getElementById('message');
 const vkButtons = Array.from(document.querySelectorAll('.btn.vk'));
+const trackFileInput = document.getElementById('track-file');
 
 function i18n(key, fallback) {
   const value = chrome.i18n.getMessage(key);
@@ -70,7 +71,7 @@ async function runAudioDeleter(mode) {
   await runPageFile('scripts/vkAudioDeleter.js');
 }
 
-async function callVkOps(action) {
+async function callVkOps(action, args = []) {
   const tab = await getActiveTab();
   if (!tab || !tab.id) {
     setMessage(i18n('msgNoActiveTab', 'Не удалось найти активную вкладку.'));
@@ -79,14 +80,14 @@ async function callVkOps(action) {
 
   const [probe] = await chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    func: (act) => {
+    func: (act, values) => {
       if (!window.__smartScrollerApi || typeof window.__smartScrollerApi[act] !== 'function') {
         return { ok: false };
       }
-      window.__smartScrollerApi[act]();
+      window.__smartScrollerApi[act](...values);
       return { ok: true };
     },
-    args: [action]
+    args: [action, args]
   });
 
   if (probe && probe.result && probe.result.ok) {
@@ -100,13 +101,23 @@ async function callVkOps(action) {
 
   await chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    func: (act) => {
+    func: (act, values) => {
       if (window.__smartScrollerApi && typeof window.__smartScrollerApi[act] === 'function') {
-        window.__smartScrollerApi[act]();
+        window.__smartScrollerApi[act](...values);
       }
     },
-    args: [action]
+    args: [action, args]
   });
+}
+
+async function runPlaylistImport(lines) {
+  const tab = await getActiveTab();
+  if (!tab || !tab.id) {
+    setMessage(i18n('msgNoActiveTab', 'Не удалось найти активную вкладку.'));
+    return;
+  }
+
+  await callVkOps('vkImport', [lines]);
 }
 
 async function callSmartScroller(action) {
@@ -215,6 +226,9 @@ async function init() {
           await callSmartScroller('open');
           await runAudioDeleter('duplicates');
           setMessage(i18n('msgVkDeleteDuplicatesStarted', 'Удаление дубликатов запущено.'));
+        } else if (action === 'vk-import') {
+          trackFileInput.value = '';
+          trackFileInput.click();
         } else if (action === 'vk-photos-select-all') {
           await runFile('scripts/vkPhotoAlbumSelector.js');
           setMessage(i18n('msgVkPhotosSelectAll', 'Все фото выбраны. Откройте «Ещё» и выберите перенос.'));
@@ -242,4 +256,24 @@ document.addEventListener('DOMContentLoaded', () => {
     setMessage(i18n('msgInitFail', 'Не удалось инициализировать панель.'));
   });
   applyI18n();
+});
+
+trackFileInput.addEventListener('change', async () => {
+  const file = trackFileInput.files && trackFileInput.files[0];
+  if (!file) return;
+
+  try {
+    const text = await file.text();
+    const lines = text.split(/\r?\n/).map(line => line.trim()).filter(Boolean);
+    if (!lines.length) {
+      setMessage(i18n('msgVkImportEmpty', 'TXT-файл не содержит треков.'));
+      return;
+    }
+
+    await runPlaylistImport(lines);
+    setMessage(i18n('msgVkImportStarted', 'Добавление треков из TXT запущено.'));
+  } catch (err) {
+    console.error(err);
+    setMessage(i18n('msgVkImportReadError', 'Не удалось прочитать TXT-файл.'));
+  }
 });

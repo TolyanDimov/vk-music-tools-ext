@@ -8,10 +8,10 @@ Built from older [snippets](https://github.com/TolyanDimov/Snippets) that were u
 
 ## Features
 
-- **SmartScroll:** auto scroll up/down, container selection, floating control panel, and a bottom-of-list reload nudge for VK lazy loading.
+- **SmartScroll:** fast or smooth auto scroll up/down, container selection, floating control panel, and a bottom-of-list reload nudge for VK lazy loading.
 - **VK Music:** mass add/remove tracks in playlist edit mode, batch size selection (1–100), random track selection, delete loaded tracks and safe duplicates from your music.
 - **VK Photo Albums:** select all photos with VK's native button for later moving them through the **More** menu.
-- **Export:** save track list to TXT (`Artist - Title`).
+- **Export:** save a selected container's track list to TXT (`Artist - Title`), with duplicate lines removed.
 
 ## Localization support
 
@@ -28,7 +28,8 @@ The extension supports three languages: Russian, English, and German.
 ### SmartScroll
 
 1. Click **Open panel** in the popup.
-2. The panel provides **Up**, **Down**, **Container**, **Stop**, **Close**.
+2. The panel provides **Up**, **Down**, **Container**, **Stop**, **Close**, and **Export TXT**.
+3. Use **Smooth scrolling** to switch between smooth scrolling with pauses and the fast mode.
 
 ### VK Music
 
@@ -39,6 +40,8 @@ The extension supports three languages: Russian, English, and German.
 5. Set **Per batch** to a value from 1 to 100. With random mode disabled, adding starts from the bottom of the available list.
 6. Use **Remove** to uncheck tracks and **Stop** to cancel an operation.
 7. Progress is shown in the floating panel status line.
+
+To add tracks from a TXT export, use **From file** in the floating panel or **Add from TXT** in the popup. Tracks are matched by `Artist - Title` and selected from the last file line to the first. Multiple artists and older files containing only one artist are supported.
 
 ### Moving photos between VK albums
 
@@ -52,7 +55,9 @@ The extension presses VK's native **Select all** button. Availability of moving 
 
 1. Open a playlist or VK Music section.
 2. **First scroll to the end** (you can use SmartScroll).
-3. Click **Export to TXT** in the popup.
+3. Click **Export TXT** in the popup or in the floating panel.
+
+When exporting from the floating panel, select the target list with **Container** first. Only that container is exported, and repeated `Artist - Title` lines are removed.
 
 ### Delete Music
 

@@ -47,11 +47,14 @@
   "btnVkAdd": {
     "message": "Массово добавить"
   },
+  "btnVkImport": {
+    "message": "Добавить из TXT"
+  },
   "btnVkRemove": {
     "message": "Массово снять"
   },
   "btnVkExport": {
-    "message": "Экспорт в txt"
+    "message": "Экспорт TXT"
   },
   "btnVkDelete": {
     "message": "Удалить музыку"
@@ -91,6 +94,15 @@
   },
   "msgVkAddStarted": {
     "message": "Массовое добавление запущено."
+  },
+  "msgVkImportStarted": {
+    "message": "Добавление треков из TXT запущено."
+  },
+  "msgVkImportEmpty": {
+    "message": "TXT-файл не содержит треков."
+  },
+  "msgVkImportReadError": {
+    "message": "Не удалось прочитать TXT-файл."
   },
   "msgVkRemoveStarted": {
     "message": "Массовое снятие запущено."
